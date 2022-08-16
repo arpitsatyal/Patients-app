@@ -1,14 +1,12 @@
-import { PrismaClient } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
-
-const prisma = new PrismaClient();
+import * as patientService from '../services/patients';
 
 export const getPatients = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const allPatients = await prisma.patient.findMany({});
+  const allPatients = await patientService.getAll();
   res.json(allPatients);
 };
 
@@ -17,18 +15,6 @@ export const createPatient = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { firstName, lastName, email, password, contact, address, dob } =
-    req.body;
-  const user = await prisma.patient.create({
-    data: {
-      firstName,
-      lastName,
-      email,
-      password,
-      contact,
-      address,
-      dob,
-    },
-  });
-  res.json(user);
+ const newPatient = patientService.create(req.body);
+  res.json(newPatient);
 };

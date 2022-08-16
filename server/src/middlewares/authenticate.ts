@@ -12,8 +12,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
    const token = req.header('Authorization')?.replace('Bearer ', '');
 
    if (!token) {
-    console.log("plz add token man")
-     throw new Error();
+    return next("Token not provided.");
    }
 
    const decoded = jwt.verify(token, SECRET_KEY);
@@ -21,7 +20,6 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
 
    next();
  } catch (err) {
-    console.log("errrr", err);
-   res.status(401).send('Please authenticate');
+   res.status(401).send('Invalid token');
  }
 };

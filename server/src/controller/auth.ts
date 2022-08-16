@@ -1,6 +1,6 @@
+import { IUser } from './../types/index';
 import { PrismaClient } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
-import { IUser } from "../types/User";
 import { createAccessToken } from "../utils/createAccessToken";
 
 const prisma = new PrismaClient();
