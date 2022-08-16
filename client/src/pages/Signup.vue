@@ -11,7 +11,9 @@
           placeholder="Password"
         />
         <button type="submit" class="btn">Sign up</button>
-        <p class="message">Go Back to<router-link to="/signup">Login</router-link></p>
+        <p class="message">
+          Go Back to<router-link to="/signup">Login</router-link>
+        </p>
       </form>
     </div>
   </div>
@@ -21,10 +23,15 @@
 import router from "@/router";
 import { defineComponent } from "@vue/runtime-core";
 import * as authService from "../services/auth";
+import { useToast } from "vue-toastification";
 
 export default defineComponent({
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Signup",
+  setup() {
+    const toast = useToast();
+    return { toast };
+  },
   data() {
     return {
       name: "",
@@ -41,7 +48,10 @@ export default defineComponent({
         password: this.password,
       });
       if (response.data) {
-        router.push("/");
+        this.toast.success("Sign up successful! Now login.");
+        setTimeout(() => router.push("/"), 3000);
+      } else {
+        this.toast.error(response.message);
       }
     },
   },

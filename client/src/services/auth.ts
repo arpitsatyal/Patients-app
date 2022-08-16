@@ -15,7 +15,7 @@ export const login = async (loginData: IUser): Promise<LoginResponse> => {
     if (axios.isAxiosError(error)) {
       return {
         data: null,
-        message: error.message,
+        message: error.message
       };
     } else {
       return {

@@ -22,10 +22,15 @@
 import router from "@/router";
 import { defineComponent } from "@vue/runtime-core";
 import * as authService from "../services/auth";
+import { useToast } from "vue-toastification";
 
 export default defineComponent({
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Login",
+  setup() {
+    const toast = useToast();
+    return { toast };
+  },
   data() {
     return {
       email: "",
@@ -40,7 +45,10 @@ export default defineComponent({
         password: this.password,
       });
       if (response.data) {
-        router.push("/dashboard");
+        this.toast.success("Logged in successfully!");
+        setTimeout(() => router.push("/dashboard"), 3000);
+      } else {
+        this.toast.error(response.message);
       }
     },
   },
