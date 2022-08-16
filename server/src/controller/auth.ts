@@ -1,4 +1,4 @@
-import { IUser } from './../types/index';
+import { IUser } from "./../types/index";
 import { PrismaClient } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 import { createAccessToken } from "../utils/createAccessToken";
@@ -10,7 +10,10 @@ export const login = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { email, password }: IUser = req.body;
+  const { email, password }: IUser = req.body?.body;
+  if (!email || !password) {
+    return next("please enter email and password.");
+  }
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
     return next("invalid username or password.");
@@ -29,7 +32,11 @@ export const register = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { name, email, password }: IUser = req.body;
+  const { name, email, password }: IUser = req.body?.body;
+
+  if (!email || !password) {
+    return next("please enter email and password.");
+  }
 
   const user = await prisma.user.create({
     data: {
@@ -38,5 +45,8 @@ export const register = async (
       password,
     },
   });
-  res.json(user);
+  res.status(200).json({
+    data: { user },
+    message: "sign up completed successfully...",
+  });
 };
