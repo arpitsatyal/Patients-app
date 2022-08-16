@@ -40,12 +40,17 @@ export default defineComponent({
   methods: {
     async onSubmit(e: Event) {
       e.preventDefault();
+      if (!this.email && !this.password) {
+        this.toast("Please enter email and password.");
+        return;
+      }
       const response = await authService.login({
         email: this.email,
         password: this.password,
       });
       if (response.data) {
         this.toast.success("Logged in successfully!");
+        localStorage.setItem("user", JSON.stringify(response.data));
         setTimeout(() => router.push("/dashboard"), 3000);
       } else {
         this.toast.error(response.message);

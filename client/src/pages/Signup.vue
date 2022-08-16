@@ -12,7 +12,7 @@
         />
         <button type="submit" class="btn">Sign up</button>
         <p class="message">
-          Go Back to<router-link to="/signup">Login</router-link>
+          Go Back to <router-link to="/">Login</router-link>
         </p>
       </form>
     </div>
@@ -42,6 +42,10 @@ export default defineComponent({
   methods: {
     async onSubmit(e: Event) {
       e.preventDefault();
+       if(!this.email && !this.password) {
+        this.toast('Please enter email and password.');
+        return;
+      }
       const response = await authService.signup({
         name: this.name,
         email: this.email,

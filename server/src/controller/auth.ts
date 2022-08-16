@@ -22,7 +22,7 @@ export const login = async (
   const accessToken = createAccessToken({ userId: user.id });
 
   res.status(200).json({
-    data: { accessToken },
+    data: { accessToken, user },
     message: "Logged in successfully...",
   });
 };
