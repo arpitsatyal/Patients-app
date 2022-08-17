@@ -53,12 +53,11 @@ export const update = async (id: number, body: IPatient) => {
 
 export const remove = async (id: number) => {
   const patient = await getOne(id);
-  const updatedPatient = await prisma.patient.delete({
+  await prisma.patient.delete({
     where: {
       email: patient.email,
     },
   });
-  return updatedPatient;
 };
 
 export const markAsSpecial = async (

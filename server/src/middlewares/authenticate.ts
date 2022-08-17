@@ -6,27 +6,34 @@ import { getUser } from "../controller/auth";
 export const SECRET_KEY: Secret = process.env.JWT_SECRET;
 
 export interface CustomRequest extends Request {
-  token: string | JwtPayload;
   user: IUser;
+}
+
+interface IDecoded {
+  userId: number;
+  iat: number;
 }
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log(req.header('Authorization'));
     const token = req.header("Authorization")?.replace("Bearer ", "");
     if (!token) {
       return next("Token not provided.");
     }
 
-    const decoded = jwt.verify(token, SECRET_KEY);
-    (req as CustomRequest).token = decoded;
+    jwt.verify(token, SECRET_KEY, async (err, decoded: IDecoded) => {
+      if (err) {
+        return next(err);
+      } else {
+        console.log("decoded", decoded);
+        const userId = decoded.userId;
 
-    const userId = decoded["userId"];
+        const currentUser = await getUser(userId);
 
-    const currentUser = await getUser(userId);
-
-    (req as any).user = currentUser;
-    next();
+        (req as CustomRequest).user = currentUser;
+        next();
+      }
+    });
   } catch (err) {
     res.status(401).send("Invalid token");
   }

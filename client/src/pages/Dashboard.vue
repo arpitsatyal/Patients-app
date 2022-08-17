@@ -27,6 +27,7 @@ import { defineComponent, ref } from "@vue/runtime-core";
 import * as patientService from "../services/patients";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
 import type { SizeType } from "ant-design-vue/es/config-provider";
+import { useToast } from "vue-toastification";
 
 const columns = [
   {
@@ -67,7 +68,10 @@ export default defineComponent({
     DeleteOutlined,
   },
   setup() {
+    const toast = useToast();
+
     return {
+      toast,
       columns,
       size: ref<SizeType>("large"),
     };
@@ -75,6 +79,7 @@ export default defineComponent({
   methods: {
     async deletePatient(id: number) {
       await patientService.remove(id);
+      this.toast.warning("Patient deleted.");
     },
   },
   async created() {
