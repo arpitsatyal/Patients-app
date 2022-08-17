@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Login from "../pages/Login.vue";
 import Signup from "../pages/Signup.vue";
 import Dashboard from "../pages/Dashboard.vue";
+import CreatePatient from '../pages/CreatePatient.vue';
 
 const routes = [
   {
@@ -18,6 +19,14 @@ const routes = [
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/add-patient",
+    name: "CreatePatient",
+    component: CreatePatient,
     meta: {
       requiresAuth: true,
     },

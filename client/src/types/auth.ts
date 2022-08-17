@@ -14,7 +14,7 @@ export interface LoginResponse {
 }
 
 interface ISignUpResponse extends IUser {
-  id: string;
+  id: number;
 }
 export interface SignUpResponse {
   data: ISignUpResponse | null;

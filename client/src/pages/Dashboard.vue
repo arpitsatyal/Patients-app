@@ -1,5 +1,8 @@
 <template>
   <h1>Patients</h1>
+  <a-button type="primary" shape="round" :size="size">
+    <router-link to="/add-patient">Add Patient</router-link>
+  </a-button>
   <a-table :columns="columns" :data-source="patients">
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'firstName'">
@@ -20,9 +23,10 @@
 
 <script lang="ts">
 import { IPatientResponse } from "@/types/patients";
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent, ref } from "@vue/runtime-core";
 import * as patientService from "../services/patients";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
+import type { SizeType } from "ant-design-vue/es/config-provider";
 
 const columns = [
   {
@@ -65,12 +69,13 @@ export default defineComponent({
   setup() {
     return {
       columns,
+      size: ref<SizeType>("large"),
     };
   },
   async created() {
     const response = await patientService.getAll();
-    if (response.data) {
-      this.patients = response.data;
+    if (response) {
+      this.patients = response;
     }
   },
   inheritAttrs: false, // disable 'non-props' warning

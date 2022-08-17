@@ -11,10 +11,6 @@ const port = process.env.PORT;
 app.use(express.json());
 app.use("/api", router);
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Express + TypeScript Server');
-});
-
 app.use((error: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
   console.log('error is>>>', error);
   res.status(400).json({ error });

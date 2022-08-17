@@ -21,8 +21,8 @@ export const create = async (body: IPatient) => {
       lastName,
       email,
       password,
-      contact,
       address,
+      contact,
       dob,
     },
   });

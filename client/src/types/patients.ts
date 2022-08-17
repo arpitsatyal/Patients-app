@@ -9,11 +9,7 @@ export interface IPatient {
 }
 
 export interface IPatientResponse extends IPatient {
-  id: string;
+  id: number;
   authorId?: string;
 }
 
-export interface PatientResponse {
-  data: IPatientResponse[] | null;
-  message: string;
-}

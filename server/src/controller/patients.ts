@@ -10,7 +10,6 @@ export const getPatients = async (
     const allPatients = await patientService.getAll();
     res.status(200).json({
       data: allPatients,
-      message: "success.",
     });
   } catch (e) {
     next(e);
@@ -26,7 +25,6 @@ export const getPatient = async (
     const patient = await patientService.getOne(Number(req.params.id));
     res.status(200).json({
       data: patient,
-      message: "success.",
     });
   } catch (e) {
     next(e);
@@ -39,11 +37,8 @@ export const createPatient = async (
   next: NextFunction
 ) => {
   try {
-    const newPatient = await patientService.create(req.body);
-    res.status(200).json({
-      data: newPatient,
-      message: "success.",
-    });
+    const newPatient = await patientService.create(req.body?.body);
+    res.status(200).json({ data: newPatient });
   } catch (e) {
     next(e);
   }
@@ -55,10 +50,12 @@ export const updatePatient = async (
   next: NextFunction
 ) => {
   try {
-    const newPatient = await patientService.update(Number(req.params.id), req.body);
+    const newPatient = await patientService.update(
+      Number(req.params.id),
+      req.body?.body
+    );
     res.status(200).json({
       data: newPatient,
-      message: "success.",
     });
   } catch (e) {
     next(e);
@@ -72,10 +69,7 @@ export const deletePatient = async (
 ) => {
   try {
     await patientService.remove(Number(req.params.id));
-    res.status(200).json({
-      data: undefined,
-      message: "success.",
-    });
+    res.status(204).json(null);
   } catch (e) {
     next(e);
   }
