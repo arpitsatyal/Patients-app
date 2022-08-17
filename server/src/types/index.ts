@@ -12,4 +12,5 @@ export interface IPatient {
     contact: string,
     address: string,
     dob: string,
+    image: any
 }

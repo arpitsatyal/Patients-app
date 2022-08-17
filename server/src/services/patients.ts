@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { IPatient } from "../types";
+import uploadImage from "../utils/uploadImage";
 
 const prisma = new PrismaClient();
 
@@ -15,6 +16,11 @@ export const getOne = async (id: number) => {
 
 export const create = async (body: IPatient) => {
   const { firstName, lastName, email, password, contact, address, dob } = body;
+  const iData = body.image[0].thumbUrl;
+  let image: string;
+  if(iData) {
+    image = await uploadImage(iData);
+  }
   const user = await prisma.patient.create({
     data: {
       firstName,
@@ -24,6 +30,7 @@ export const create = async (body: IPatient) => {
       address,
       contact,
       dob,
+      image
     },
   });
   return user;

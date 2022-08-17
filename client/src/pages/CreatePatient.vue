@@ -73,34 +73,13 @@
         </a-select>
       </a-form-item>
 
-      <a-form-item name="upload" label="Upload">
-        <a-upload
-          v-model:fileList="formState.upload"
-          name="logo"
-          action="/upload.do"
-          list-type="picture"
-        >
+      <a-form-item name="image" label="Upload">
+        <a-upload v-model:fileList="formState.image" name="image" list-type="picture">
           <a-button>
             <template #icon><UploadOutlined /></template>
             Click to upload
           </a-button>
         </a-upload>
-      </a-form-item>
-
-      <a-form-item label="Dragger">
-        <a-form-item name="dragger" no-style>
-          <a-upload-dragger
-            v-model:fileList="formState.dragger"
-            name="files"
-            action="/upload.do"
-          >
-            <p class="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p class="ant-upload-text">Click or drag file to this area to upload</p>
-            <p class="ant-upload-hint">Support for a single or bulk upload.</p>
-          </a-upload-dragger>
-        </a-form-item>
       </a-form-item>
 
       <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
@@ -111,15 +90,16 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
-import { UploadOutlined, InboxOutlined } from "@ant-design/icons-vue";
+import { UploadOutlined } from "@ant-design/icons-vue";
 import * as patientService from "../services/patients";
+import { useToast } from "vue-toastification";
 
 export default defineComponent({
   components: {
     UploadOutlined,
-    InboxOutlined,
   },
   setup() {
+    const toast = useToast();
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 },
@@ -128,7 +108,9 @@ export default defineComponent({
     const formState = reactive<Record<string, any>>({});
     const onFinish = async (values: any) => {
       const response = await patientService.create(values);
-      console.log("response", response);
+      if (response) {
+        toast.success("Patient created successfully...");
+      }
     };
 
     const onFinishFailed = (errorInfo: any) => {

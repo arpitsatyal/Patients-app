@@ -27,6 +27,8 @@ model Patient {
   contact String
   address String
   dob String
+  image String?
   authorId Int? @unique
   author User? @relation(fields: [authorId], references: [id])
 }
+
