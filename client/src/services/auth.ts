@@ -1,4 +1,4 @@
-import { IUser, LoginResponse, SignUpResponse } from "../types/index";
+import { IUser, LoginResponse, SignUpResponse } from "../types/auth";
 import axios from "axios";
 
 export const login = async (loginData: IUser): Promise<LoginResponse> => {
