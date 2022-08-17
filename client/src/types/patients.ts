@@ -6,10 +6,10 @@ export interface IPatient {
   contact: string;
   address: string;
   dob: string;
+  authorId: number;
+  specialAttention: boolean;
 }
 
 export interface IPatientResponse extends IPatient {
   id: number;
-  authorId?: string;
 }
-

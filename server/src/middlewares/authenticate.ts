@@ -5,7 +5,7 @@ import { getUser } from "../controller/auth";
 
 export const SECRET_KEY: Secret = process.env.JWT_SECRET;
 
-export interface CustomRequest extends Request {
+export interface CustomUserRequest extends Request {
   user: IUser;
 }
 
@@ -25,12 +25,11 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
       if (err) {
         return next(err);
       } else {
-        console.log("decoded", decoded);
         const userId = decoded.userId;
 
         const currentUser = await getUser(userId);
 
-        (req as CustomRequest).user = currentUser;
+        (req as CustomUserRequest).user = currentUser;
         next();
       }
     });

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
+import { CustomUserRequest } from "../middlewares/authenticate";
 import * as patientService from "../services/patients";
-import { getUser } from "./auth";
 
 export const getPatients = async (
   req: Request,
@@ -83,10 +83,9 @@ export const markAsSpecial = async (
   next: NextFunction
 ) => {
   try {
-    const user = await getUser((req as any).user);
     const updatedPatient = await patientService.markAsSpecial(
       req.body?.body,
-      user.id,
+      (req as CustomUserRequest).user.id,
       Number(req.params.id)
     );
     res.status(200).json({

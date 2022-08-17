@@ -13,7 +13,7 @@ export interface LoginResponse {
   message: string;
 }
 
-interface ISignUpResponse extends IUser {
+export interface ISignUpResponse extends IUser {
   id: number;
 }
 export interface SignUpResponse {

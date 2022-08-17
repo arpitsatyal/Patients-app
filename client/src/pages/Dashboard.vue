@@ -9,6 +9,17 @@
         <a> {{ record.firstName }} {{ record.lastName }} </a>
       </template>
 
+      <template v-else-if="column.key === 'fav'">
+        <span class="pointer">
+          <template v-if="record.specialAttention">
+            <HeartFilled @click="markAsSpecial(record.id, false)" />
+          </template>
+          <template v-else>
+            <HeartOutlined @click="markAsSpecial(record.id, true)" />
+          </template>
+        </span>
+      </template>
+
       <template v-else-if="column.key === 'action'">
         <span class="pointer">
           <EditOutlined />
@@ -25,7 +36,12 @@
 import { IPatientResponse } from "@/types/patients";
 import { defineComponent, ref } from "@vue/runtime-core";
 import * as patientService from "../services/patients";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  HeartOutlined,
+  HeartFilled,
+} from "@ant-design/icons-vue";
 import type { SizeType } from "ant-design-vue/es/config-provider";
 import { useToast } from "vue-toastification";
 
@@ -51,6 +67,10 @@ const columns = [
     dataIndex: "dob",
   },
   {
+    title: "Special Attention",
+    key: "fav",
+  },
+  {
     title: "Action",
     key: "action",
   },
@@ -66,6 +86,8 @@ export default defineComponent({
   components: {
     EditOutlined,
     DeleteOutlined,
+    HeartOutlined,
+    HeartFilled,
   },
   setup() {
     const toast = useToast();
@@ -80,13 +102,26 @@ export default defineComponent({
     async deletePatient(id: number) {
       await patientService.remove(id);
       this.toast.warning("Patient deleted.");
+      this.fetchAllPatients();
+    },
+    async markAsSpecial(id: number, body: boolean) {
+      await patientService.markAsSpecial(body, id);
+      if (body) {
+        this.toast.success("Patient marked as special.");
+      } else {
+        this.toast.warning("Patient un-marked as special.");
+      }
+      this.fetchAllPatients();
+    },
+    async fetchAllPatients() {
+      const response = await patientService.getAll();
+      if (response) {
+        this.patients = response;
+      }
     },
   },
   async created() {
-    const response = await patientService.getAll();
-    if (response) {
-      this.patients = response;
-    }
+    this.fetchAllPatients();
   },
   inheritAttrs: false, // disable 'non-props' warning
 });
