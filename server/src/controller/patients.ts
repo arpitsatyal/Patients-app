@@ -7,7 +7,10 @@ export const getPatients = async (
   next: NextFunction
 ) => {
   const allPatients = await patientService.getAll();
-  res.json(allPatients);
+  res.status(200).json({
+    data: allPatients,
+    message: "success.",
+  });
 };
 
 export const createPatient = async (
@@ -16,5 +19,8 @@ export const createPatient = async (
   next: NextFunction
 ) => {
  const newPatient = patientService.create(req.body);
-  res.json(newPatient);
+ res.status(200).json({
+  data: newPatient,
+  message: "success.",
+});
 };
