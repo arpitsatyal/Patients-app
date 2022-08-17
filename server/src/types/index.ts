@@ -1,4 +1,5 @@
 export interface IUser {
+    id?: number;
     name?: string;
     email: string;
     password: string;
@@ -12,5 +13,7 @@ export interface IPatient {
     contact: string,
     address: string,
     dob: string,
-    image: any
+    image: any,
+    authorId: number
 }
+

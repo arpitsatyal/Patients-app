@@ -10,10 +10,10 @@
       </template>
 
       <template v-else-if="column.key === 'action'">
-        <span>
+        <span class="pointer">
           <EditOutlined />
           <a-divider type="vertical" />
-          <DeleteOutlined />
+          <DeleteOutlined @click="deletePatient(record.id)" />
           <a-divider type="vertical" />
         </span>
       </template>
@@ -72,6 +72,11 @@ export default defineComponent({
       size: ref<SizeType>("large"),
     };
   },
+  methods: {
+    async deletePatient(id: number) {
+      await patientService.remove(id);
+    },
+  },
   async created() {
     const response = await patientService.getAll();
     if (response) {
@@ -81,3 +86,7 @@ export default defineComponent({
   inheritAttrs: false, // disable 'non-props' warning
 });
 </script>
+
+<style scoped lang="scss">
+@import "../assets/global.scss";
+</style>

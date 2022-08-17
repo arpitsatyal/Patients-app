@@ -18,7 +18,9 @@ CREATE TABLE "Patient" (
     "contact" TEXT NOT NULL,
     "address" TEXT NOT NULL,
     "dob" TEXT NOT NULL,
-    "authorId" INTEGER,
+    "image" TEXT,
+    "authorId" INTEGER NOT NULL,
+    "specialAttention" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Patient_pkey" PRIMARY KEY ("id")
 );
@@ -29,8 +31,5 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 -- CreateIndex
 CREATE UNIQUE INDEX "Patient_email_key" ON "Patient"("email");
 
--- CreateIndex
-CREATE UNIQUE INDEX "Patient_authorId_key" ON "Patient"("authorId");
-
 -- AddForeignKey
-ALTER TABLE "Patient" ADD CONSTRAINT "Patient_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Patient" ADD CONSTRAINT "Patient_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -5,6 +5,7 @@ import {
   deletePatient,
   getPatient,
   getPatients,
+  markAsSpecial,
   updatePatient,
 } from "../controller/patients";
 
@@ -15,5 +16,7 @@ router.use(auth);
 router.route("/").get(getPatients).post(createPatient);
 
 router.route("/:id").get(getPatient).put(updatePatient).delete(deletePatient);
+
+router.put("/mark-as-special/:id", markAsSpecial);
 
 export default router;

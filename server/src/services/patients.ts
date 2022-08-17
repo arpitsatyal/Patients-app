@@ -1,3 +1,4 @@
+import { IUser } from "./../types/index";
 import { PrismaClient } from "@prisma/client";
 import { IPatient } from "../types";
 import uploadImage from "../utils/uploadImage";
@@ -14,11 +15,13 @@ export const getOne = async (id: number) => {
   return patient;
 };
 
-export const create = async (body: IPatient) => {
+export const create = async (body: IPatient, currentUser: IUser) => {
   const { firstName, lastName, email, password, contact, address, dob } = body;
-  const iData = body.image[0].thumbUrl;
+  const authorId = currentUser.id;
   let image: string;
-  if(iData) {
+
+  if (body.image) {
+    const iData = body.image[0].thumbUrl;
     image = await uploadImage(iData);
   }
   const user = await prisma.patient.create({
@@ -30,7 +33,8 @@ export const create = async (body: IPatient) => {
       address,
       contact,
       dob,
-      image
+      image,
+      authorId,
     },
   });
   return user;
@@ -53,6 +57,21 @@ export const remove = async (id: number) => {
     where: {
       email: patient.email,
     },
+  });
+  return updatedPatient;
+};
+
+export const markAsSpecial = async (
+  body: IPatient,
+  userId: number,
+  patientId: number
+) => {
+  const updatedPatient = await prisma.patient.updateMany({
+    where: {
+      authorId: userId,
+      id: patientId,
+    },
+    data: body,
   });
   return updatedPatient;
 };

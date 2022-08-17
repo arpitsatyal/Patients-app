@@ -50,3 +50,12 @@ export const register = async (
     message: "sign up completed successfully...",
   });
 };
+
+export async function getUser(userId: number) {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+  return user;
+}

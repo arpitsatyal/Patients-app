@@ -67,9 +67,9 @@
           v-model:value="formState.address"
           placeholder="Please select a district"
         >
-          <a-select-option value="china">Kathmandu</a-select-option>
-          <a-select-option value="usa">Bhaktapur</a-select-option>
-          <a-select-option value="usa">Lalitpur</a-select-option>
+          <a-select-option value="Kathmandu">Kathmandu</a-select-option>
+          <a-select-option value="Bhaktapur">Bhaktapur</a-select-option>
+          <a-select-option value="Lalitpur">Lalitpur</a-select-option>
         </a-select>
       </a-form-item>
 

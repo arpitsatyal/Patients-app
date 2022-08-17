@@ -15,7 +15,7 @@ model User {
   name String?
   password String
   email String @unique
-  patients Patient?
+  patient Patient[]
 }
 
 model Patient {
@@ -28,7 +28,8 @@ model Patient {
   address String
   dob String
   image String?
-  authorId Int? @unique
-  author User? @relation(fields: [authorId], references: [id])
+  author User @relation(fields: [authorId], references: [id])
+  authorId Int 
+  specialAttention Boolean @default(false)
 }
 
