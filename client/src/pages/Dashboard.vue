@@ -17,10 +17,13 @@
         <template v-else-if="column.key === 'specialAttention'">
           <span class="pointer">
             <template v-if="record.specialAttention">
-              <HeartFilled @click="markAsSpecial(record.id, false)" />
+              <EyeOutlined @click="markAsSpecial(record.id, false)" class="iconSize" />
             </template>
             <template v-else>
-              <HeartOutlined @click="markAsSpecial(record.id, true)" />
+              <EyeInvisibleOutlined
+                @click="markAsSpecial(record.id, true)"
+                class="iconSize"
+              />
             </template>
           </span>
         </template>
@@ -28,10 +31,10 @@
         <template v-else-if="column.key === 'action'">
           <span class="pointer">
             <router-link :to="{ name: 'UpdatePatient', params: { id: record.id } }">
-              <EditOutlined style="margin-right: 10px" />
+              <EditOutlined style="margin-right: 10px" class="iconSize" />
             </router-link>
             <a-divider type="vertical" />
-            <DeleteOutlined @click="deletePatient(record.id)" />
+            <DeleteOutlined @click="deletePatient(record.id)" class="iconSize" />
             <a-divider type="vertical" />
           </span>
         </template>
@@ -47,8 +50,8 @@ import * as patientService from "../services/patients";
 import {
   EditOutlined,
   DeleteOutlined,
-  HeartOutlined,
-  HeartFilled,
+  EyeInvisibleOutlined,
+  EyeOutlined,
 } from "@ant-design/icons-vue";
 import type { SizeType } from "ant-design-vue/es/config-provider";
 import { useToast } from "vue-toastification";
@@ -101,8 +104,8 @@ export default defineComponent({
   components: {
     EditOutlined,
     DeleteOutlined,
-    HeartOutlined,
-    HeartFilled,
+    EyeInvisibleOutlined,
+    EyeOutlined,
     Header,
   },
   setup() {

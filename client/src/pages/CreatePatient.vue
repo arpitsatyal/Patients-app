@@ -79,13 +79,15 @@
       <a-form-item
         name="allergies"
         label="Allergies"
-        :rules="[
-          !paramId && {
-            required: true,
-            message: 'Please select allergies',
-            type: 'array',
-          },
-        ]"
+        :rules="
+          !paramId && [
+            {
+              required: true,
+              message: 'Please select allergies',
+              type: 'array',
+            },
+          ]
+        "
       >
         <a-select
           v-model:value="formState['allergies']"
