@@ -2,6 +2,7 @@ import { IUser } from "./../types/index";
 import { PrismaClient } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 import { createAccessToken } from "../utils/createAccessToken";
+import { passwordHash, decryptPassword } from "../utils/passwordHash";
 
 const prisma = new PrismaClient();
 
@@ -18,7 +19,12 @@ export const login = async (
   if (!user) {
     return next("invalid username or password.");
   }
-  //NEXT: validate password
+  if(user) {
+    const decryptedPassword = await decryptPassword(user.password);
+    if(decryptedPassword !== password) {
+      return next("invalid username or password.");
+    }
+  }
   const accessToken = createAccessToken({ userId: user.id });
 
   res.status(200).json({
@@ -37,12 +43,12 @@ export const register = async (
   if (!email || !password) {
     return next("please enter email and password.");
   }
-
+  const hashedPassword = await passwordHash(password);
   const user = await prisma.user.create({
     data: {
       name,
       email,
-      password,
+      password: hashedPassword,
     },
   });
   res.status(200).json({
