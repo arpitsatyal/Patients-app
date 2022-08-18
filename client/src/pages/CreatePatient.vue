@@ -49,12 +49,12 @@
       </a-form-item>
 
       <a-form-item
-        label="date of birth"
+        label="Date of Birth"
         name="dob"
         :rules="[{ required: true, message: 'Please input your dob!' }]"
       >
         <a-space direction="vertical" :size="12">
-          <a-date-picker v-model:value="formState.dob" />
+          <a-date-picker value-format="YYYY-MM-DD" v-model:value="formState.dob" />
         </a-space>
       </a-form-item>
 

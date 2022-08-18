@@ -4,7 +4,16 @@
     <section class="profile">
       <header class="header">
         <div class="details">
-          <img :src="patient.image" alt="John Doe" class="profile-pic" />
+          <template v-if="patient.image">
+            <img :src="patient.image" :alt="patient.firstName" class="profile-pic" />
+          </template>
+          <template v-else>
+            <img
+              src="@/assets/images/default.jpg"
+              :alt="patient.firstName"
+              class="profile-pic"
+            />
+          </template>
           <h1 class="heading">{{ patient.firstName }} {{ patient.lastName }}</h1>
 
           <div class="stats fontClass">
@@ -27,7 +36,7 @@
 
     <section>
       <h2 class="center mx-20">Allergies</h2>
-      <template v-if="patient.allergies.length">
+      <template v-if="patient.allergies && patient.allergies.length">
         <table>
           <thead class="center">
             <tr class="table-headers">

@@ -11,6 +11,9 @@ export const getAll = async () => {
       {
         specialAttention: "desc",
       },
+      {
+        firstName: "asc",
+      }
     ],
   });
   return allPatients;

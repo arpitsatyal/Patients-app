@@ -10,7 +10,7 @@
       <a-menu mode="horizontal">
         <a-sub-menu>
           <template #icon>
-            <setting-outlined />
+            <SettingOutlined />
           </template>
           <template #title>Settings</template>
           <a-menu-item-group title="Actions">
@@ -26,8 +26,12 @@
 <script lang="ts">
 import router from "@/router";
 import { defineComponent } from "@vue/runtime-core";
+import { SettingOutlined } from "@ant-design/icons-vue";
 
 export default defineComponent({
+  components: {
+    SettingOutlined,
+  },
   methods: {
     logout() {
       localStorage.clear();

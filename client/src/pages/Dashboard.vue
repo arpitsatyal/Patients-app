@@ -1,37 +1,41 @@
 <template>
   <Header />
-  <a-button type="primary" shape="round" :size="size">
-    <router-link to="/add-patient">Add Patient</router-link>
-  </a-button>
-  <a-table :columns="columns" :data-source="patients">
-    <template #bodyCell="{ column, record }">
-      <template v-if="column.key === 'firstName'">
-        <router-link :to="{ name: 'PatientProfile', params: { id: record.id } }">
-          {{ record.firstName }} {{ record.lastName }}
-        </router-link>
-      </template>
+  <div class="my-20">
+    <a-button type="primary" shape="round" :size="size">
+      <router-link to="/add-patient">Add Patient</router-link>
+    </a-button>
+  </div>
+  <section class="mt-30">
+    <a-table :columns="columns" :data-source="patients" :pagination="false">
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'firstName'">
+          <router-link :to="{ name: 'PatientProfile', params: { id: record.id } }">
+            {{ record.firstName }} {{ record.lastName }}
+          </router-link>
+        </template>
 
-      <template v-else-if="column.key === 'specialAttention'">
-        <span class="pointer">
-          <template v-if="record.specialAttention">
-            <HeartFilled @click="markAsSpecial(record.id, false)" />
-          </template>
-          <template v-else>
-            <HeartOutlined @click="markAsSpecial(record.id, true)" />
-          </template>
-        </span>
-      </template>
+        <template v-else-if="column.key === 'specialAttention'">
+          <span class="pointer">
+            <template v-if="record.specialAttention">
+              <HeartFilled @click="markAsSpecial(record.id, false)" />
+            </template>
+            <template v-else>
+              <HeartOutlined @click="markAsSpecial(record.id, true)" />
+            </template>
+          </span>
+        </template>
 
-      <template v-else-if="column.key === 'action'">
-        <span class="pointer">
-          <EditOutlined />
-          <a-divider type="vertical" />
-          <DeleteOutlined @click="deletePatient(record.id)" />
-          <a-divider type="vertical" />
-        </span>
+        <template v-else-if="column.key === 'action'">
+          <span class="pointer">
+            <EditOutlined style="margin-right: 10px" />
+            <a-divider type="vertical" />
+            <DeleteOutlined @click="deletePatient(record.id)" />
+            <a-divider type="vertical" />
+          </span>
+        </template>
       </template>
-    </template>
-  </a-table>
+    </a-table>
+  </section>
 </template>
 
 <script lang="ts">
@@ -53,29 +57,35 @@ const columns = [
     title: "Name",
     dataIndex: "firstName",
     key: "firstName",
+    align: "center",
   },
   {
     title: "Contact",
     dataIndex: "contact",
     key: "contact",
+    align: "center",
   },
   {
     title: "Address",
     dataIndex: "address",
     key: "address",
+    align: "center",
   },
   {
     title: "DOB",
     key: "dob",
     dataIndex: "dob",
+    align: "center",
   },
   {
     title: "Special Attention",
     key: "specialAttention",
+    align: "center",
   },
   {
-    title: "Action",
+    title: "Actions",
     key: "action",
+    align: "center",
   },
 ];
 export default defineComponent({
