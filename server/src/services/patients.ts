@@ -9,7 +9,7 @@ export const getAll = async () => {
   const allPatients = await prisma.patient.findMany({
     orderBy: [
       {
-        specialAttention: 'desc',
+        specialAttention: "desc",
       },
     ],
   });
@@ -22,7 +22,16 @@ export const getOne = async (id: number) => {
 };
 
 export const create = async (body: IPatient, currentUser: IUser) => {
-  const { firstName, lastName, email, password, contact, address, dob, allergies } = body;
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    contact,
+    address,
+    dob,
+    allergies,
+  } = body;
   const authorId = currentUser.id;
   let image: string;
 
@@ -41,7 +50,7 @@ export const create = async (body: IPatient, currentUser: IUser) => {
       dob,
       image,
       authorId,
-      allergies
+      allergies,
     },
   });
   return user;

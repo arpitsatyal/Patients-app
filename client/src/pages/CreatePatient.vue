@@ -154,9 +154,12 @@ export default defineComponent({
     const onFinish = async (values: IPatient) => {
       loading.value = true;
       const response = await patientService.create(values);
-      if (response) {
+      if (response.data) {
         loading.value = false;
         toast.success("Patient created successfully...");
+      } else {
+        loading.value = false;
+        toast.error("Error creating patient...");
       }
     };
 

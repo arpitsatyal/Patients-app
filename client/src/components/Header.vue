@@ -1,7 +1,9 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <a-page-header
+    @click="goToDashboard"
     style="border: 1px solid rgb(235, 237, 240)"
+    class="pointer"
     title="Patient Profile Manegement"
   >
     <template #extra>
@@ -31,6 +33,13 @@ export default defineComponent({
       localStorage.clear();
       router.push("/");
     },
+    goToDashboard() {
+      router.push("/dashboard");
+    },
   },
 });
 </script>
+
+<style scoped lang="scss">
+@import "../assets/global.scss";
+</style>

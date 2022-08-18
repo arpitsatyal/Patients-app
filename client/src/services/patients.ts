@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IPatient } from "./../types/patients";
+import { IPatient, PatientResponse } from "./../types/patients";
 import { IPatientResponse } from "../types/patients";
 import { getFromLS } from "@/utils/localStorage";
 
@@ -17,9 +17,9 @@ export const getAll = async (): Promise<IPatientResponse[]> => {
   }
 };
 
-export const getOne = async (id: number): Promise<IPatientResponse> => {
+export const getOne = async (id: number): Promise<PatientResponse> => {
   try {
-    const { data } = await axios.get(`backend/api/patients/${id}`, {
+    const { data } = await axios.get(`http://localhost:4200/api/patients/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getFromLS("token")}`,
@@ -27,11 +27,14 @@ export const getOne = async (id: number): Promise<IPatientResponse> => {
     });
     return data;
   } catch (error: any) {
-    throw new Error("something went wrong");
+    return {
+      data: null,
+      messsage: error.message,
+    };
   }
 };
 
-export const create = async (body: IPatient): Promise<IPatientResponse> => {
+export const create = async (body: IPatient): Promise<PatientResponse> => {
   try {
     const { data } = await axios.post(
       "backend/api/patients",
@@ -47,14 +50,17 @@ export const create = async (body: IPatient): Promise<IPatientResponse> => {
     );
     return data;
   } catch (error: any) {
-    throw new Error("something went wrong");
+    return {
+      data: null,
+      messsage: error.message,
+    };
   }
 };
 
 export const update = async (
   body: IPatient,
   id: number
-): Promise<IPatientResponse> => {
+): Promise<PatientResponse> => {
   try {
     const { data } = await axios.put(
       `backend/api/patients/${id}`,
@@ -70,11 +76,14 @@ export const update = async (
     );
     return data;
   } catch (error: any) {
-    throw new Error("something went wrong");
+    return {
+      data: null,
+      messsage: error.message,
+    };
   }
 };
 
-export const remove = async (id: number): Promise<IPatientResponse> => {
+export const remove = async (id: number): Promise<PatientResponse> => {
   try {
     const { data } = await axios.delete(`backend/api/patients/${id}`, {
       headers: {
@@ -84,7 +93,10 @@ export const remove = async (id: number): Promise<IPatientResponse> => {
     });
     return data;
   } catch (error: any) {
-    throw new Error("something went wrong");
+    return {
+      data: null,
+      messsage: error.message,
+    };
   }
 };
 

@@ -4,24 +4,24 @@
     <section class="profile">
       <header class="header">
         <div class="details">
-          <img src="" alt="John Doe" class="profile-pic" />
-          <h1 class="heading">Claire Doe</h1>
+          <img :src="patient.image" alt="John Doe" class="profile-pic" />
+          <h1 class="heading">{{ patient.firstName }} {{ patient.lastName }}</h1>
           <div class="location">
-            <p>Kochi, India</p>
+            <p>{{ patient.address }}</p>
           </div>
           <div class="stats">
             <div class="col-4">
               <p>Email</p>
-              <h4>arpited7@gmail.com</h4>
+              <h4>{{ patient.email }}</h4>
             </div>
             <div class="col-4">
               <p>DOB</p>
 
-              <h4>1998-07-29</h4>
+              <h4>{{ patient.dob }}</h4>
             </div>
             <div class="col-4">
               <p>Contact</p>
-              <h4>9818859220</h4>
+              <h4>{{ patient.contact }}</h4>
             </div>
           </div>
         </div>
@@ -37,32 +37,19 @@
             <th>Number</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>PlayCo Group Universal Flex</td>
-            <th class="mobile-header">Number</th>
+        <template :key="allergy" v-for="allergy in patient.allergies">
+          <tbody>
+            <td>{{ allergy }}</td>
             <td>2489</td>
-            <th class="mobile-header">Market rate</th>
-          </tr>
-          <tr>
-            <td>PlayCo Group Universal Flex</td>
-            <th class="mobile-header">Number</th>
-            <td>2489</td>
-            <th class="mobile-header">Market rate</th>
-          </tr>
-          <tr>
-            <td>PlayCo Group Universal Flex</td>
-            <th class="mobile-header">Number</th>
-            <td>2489</td>
-            <th class="mobile-header">Market rate</th>
-          </tr>
-        </tbody>
+          </tbody>
+        </template>
       </table>
     </section>
   </div>
 </template>
 
 <script lang="ts">
+import { IPatient } from "@/types/patients";
 import { defineComponent } from "@vue/runtime-core";
 import Header from "../components/Header.vue";
 import * as patientService from "../services/patients";
@@ -70,6 +57,11 @@ import * as patientService from "../services/patients";
 export default defineComponent({
   components: {
     Header,
+  },
+  data() {
+    return {
+      patient: {} as IPatient,
+    };
   },
   setup() {
     const paramId = new URL(location.href).pathname.split("/")[2];
@@ -80,11 +72,13 @@ export default defineComponent({
   methods: {
     async getPatient() {
       const response = await patientService.getOne(Number(this.paramId));
-      console.log(response);
+      if (response.data) {
+        this.patient = response.data;
+      }
     },
   },
-  created() {
-    this.getPatient();
+  async created() {
+    await this.getPatient();
   },
 });
 </script>
