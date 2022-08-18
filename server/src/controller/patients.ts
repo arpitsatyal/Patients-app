@@ -85,7 +85,6 @@ export const markAsSpecial = async (
   try {
     const updatedPatient = await patientService.markAsSpecial(
       req.body?.body,
-      (req as CustomUserRequest).user.id,
       Number(req.params.id)
     );
     res.status(200).json({

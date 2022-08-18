@@ -18,6 +18,6 @@ export interface IPatientResponse extends IPatient {
 }
 
 export interface PatientResponse {
-  data: IPatientResponse | null;
+  data: IPatientResponse |  null;
   messsage?: string;
 }

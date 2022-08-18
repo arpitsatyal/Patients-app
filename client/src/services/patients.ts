@@ -105,14 +105,12 @@ export const markAsSpecial = async (
   id: number
 ): Promise<any> => {
   try {
-    const currentUserId = getFromLS("user");
     const { data } = await axios.put(
       `backend/api/patients/mark-as-special/${id}`,
       {
         body: {
           specialAttention: body,
         },
-        userId: currentUserId,
       },
       {
         headers: {

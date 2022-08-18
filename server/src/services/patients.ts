@@ -89,12 +89,10 @@ export const remove = async (id: number) => {
 
 export const markAsSpecial = async (
   body: IPatient,
-  userId: number,
   patientId: number
 ) => {
   const updatedPatient = await prisma.patient.updateMany({
     where: {
-      authorId: userId,
       id: patientId,
     },
     data: body,

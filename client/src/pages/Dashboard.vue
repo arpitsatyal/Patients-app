@@ -17,11 +17,11 @@
         <template v-else-if="column.key === 'specialAttention'">
           <span class="pointer">
             <template v-if="record.specialAttention">
-              <EyeOutlined @click="markAsSpecial(record.id, false)" class="iconSize" />
+              <EyeOutlined @click="markAsSpecial(record, false)" class="iconSize" />
             </template>
             <template v-else>
               <EyeInvisibleOutlined
-                @click="markAsSpecial(record.id, true)"
+                @click="markAsSpecial(record, true)"
                 class="iconSize"
               />
             </template>
@@ -123,12 +123,16 @@ export default defineComponent({
       this.toast.warning("Patient deleted.");
       this.fetchAllPatients();
     },
-    async markAsSpecial(id: number, body: boolean) {
-      await patientService.markAsSpecial(body, id);
+    async markAsSpecial(patient: IPatientResponse, body: boolean) {
+      await patientService.markAsSpecial(body, patient.id);
       if (body) {
-        this.toast.success("Patient marked as special.");
+        this.toast.success(
+          `Patient ${patient.firstName} ${patient.lastName} marked as special.`
+        );
       } else {
-        this.toast.warning("Patient un-marked as special.");
+        this.toast.warning(
+          `Patient ${patient.firstName} ${patient.lastName} un-marked as special.`
+        );
       }
       this.fetchAllPatients();
     },

@@ -1,5 +1,4 @@
-const crypto = require("crypto");
-
+import crypto from 'crypto';
 const algorithm = "aes-192-cbc";
 const key = crypto.scryptSync("secret", "salt", 24);
 
