@@ -7,7 +7,9 @@ export interface IPatient {
   address: string;
   dob: string;
   authorId: number;
+  image: string;
   specialAttention: boolean;
+  allergies: string[];
 }
 
 export interface IPatientResponse extends IPatient {

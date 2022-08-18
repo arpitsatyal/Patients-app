@@ -106,17 +106,23 @@
       </a-form-item>
 
       <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
-        <a-button type="primary" html-type="submit">Submit</a-button>
+        <template v-if="loading">
+          <a-button type="primary" loading>Loading</a-button>
+        </template>
+        <template v-else>
+          <a-button type="primary" html-type="submit">Submit</a-button>
+        </template>
       </a-form-item>
     </a-form>
   </section>
 </template>
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 import { UploadOutlined } from "@ant-design/icons-vue";
 import * as patientService from "../services/patients";
 import { useToast } from "vue-toastification";
 import Header from "@/components/Header.vue";
+import { IPatient } from "@/types/patients";
 
 export default defineComponent({
   components: {
@@ -124,6 +130,7 @@ export default defineComponent({
     Header,
   },
   setup() {
+    const loading = ref<boolean>(false);
     const toast = useToast();
     const formItemLayout = {
       labelCol: { span: 6 },
@@ -141,10 +148,14 @@ export default defineComponent({
       "Mold Allergies",
       "Sulfite Allergies",
     ];
+
     const formState = reactive<Record<string, any>>({});
-    const onFinish = async (values: any) => {
+
+    const onFinish = async (values: IPatient) => {
+      loading.value = true;
       const response = await patientService.create(values);
       if (response) {
+        loading.value = false;
         toast.success("Patient created successfully...");
       }
     };
@@ -153,6 +164,7 @@ export default defineComponent({
       console.log("Failed:", errorInfo);
     };
     return {
+      loading,
       allergiesList,
       formState,
       onFinish,
