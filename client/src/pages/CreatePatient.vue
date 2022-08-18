@@ -11,7 +11,12 @@
       <a-form-item
         label="First Name"
         name="firstName"
-        :rules="[{ required: true, message: 'Please input your firstName!' }]"
+        :rules="[
+          !paramId && {
+            required: true,
+            message: 'Please input your firstName!',
+          },
+        ]"
       >
         <a-input v-model:value="formState.firstName" />
       </a-form-item>
@@ -19,7 +24,12 @@
       <a-form-item
         label="Last Name"
         name="lastName"
-        :rules="[{ required: true, message: 'Please input your lastName!' }]"
+        :rules="[
+          !paramId && {
+            required: true,
+            message: 'Please input your lastName!',
+          },
+        ]"
       >
         <a-input v-model:value="formState.lastName" />
       </a-form-item>
@@ -27,7 +37,7 @@
       <a-form-item
         label="Email"
         name="email"
-        :rules="[{ required: true, message: 'Please input your email!' }]"
+        :rules="[!paramId && { required: true, message: 'Please input your email!' }]"
       >
         <a-input v-model:value="formState.email" />
       </a-form-item>
@@ -35,7 +45,12 @@
       <a-form-item
         label="Password"
         name="password"
-        :rules="[{ required: true, message: 'Please input your password!' }]"
+        :rules="[
+          !paramId && {
+            required: true,
+            message: 'Please input your password!',
+          },
+        ]"
       >
         <a-input-password v-model:value="formState.password" />
       </a-form-item>
@@ -43,7 +58,7 @@
       <a-form-item
         label="Contact"
         name="contact"
-        :rules="[{ required: true, message: 'Please input your contact!' }]"
+        :rules="[!paramId && { required: true, message: 'Please input your contact!' }]"
       >
         <a-input style="width: 100%" v-model:value="formState.contact" />
       </a-form-item>
@@ -51,7 +66,7 @@
       <a-form-item
         label="Date of Birth"
         name="dob"
-        :rules="[{ required: true, message: 'Please input your dob!' }]"
+        :rules="[!paramId && { required: true, message: 'Please input your dob!' }]"
       >
         <a-space direction="vertical" :size="12">
           <a-date-picker value-format="YYYY-MM-DD" v-model:value="formState.dob" />
@@ -62,7 +77,7 @@
         name="allergies"
         label="Allergies"
         :rules="[
-          {
+          !paramId && {
             required: true,
             message: 'Please select allergies',
             type: 'array',
@@ -84,7 +99,12 @@
         name="address"
         label="Address"
         has-feedback
-        :rules="[{ required: true, message: 'Please select your district!' }]"
+        :rules="[
+          !paramId && {
+            required: true,
+            message: 'Please select your district!',
+          },
+        ]"
       >
         <a-select
           v-model:value="formState.address"
@@ -125,11 +145,16 @@ import Header from "@/components/Header.vue";
 import { IPatient } from "@/types/patients";
 
 export default defineComponent({
+  props: {
+    paramId: {
+      type: String,
+    },
+  },
   components: {
     UploadOutlined,
     Header,
   },
-  setup() {
+  setup(props) {
     const loading = ref<boolean>(false);
     const toast = useToast();
     const formItemLayout = {
@@ -153,13 +178,24 @@ export default defineComponent({
 
     const onFinish = async (values: IPatient) => {
       loading.value = true;
-      const response = await patientService.create(values);
-      if (response.data) {
-        loading.value = false;
-        toast.success("Patient created successfully...");
+      if (props.paramId) {
+        const response = await patientService.update(values, Number(props.paramId));
+        if (response.data) {
+          loading.value = false;
+          toast.success("Patient updated successfully...");
+        } else {
+          loading.value = false;
+          toast.error("Error updating patient...");
+        }
       } else {
-        loading.value = false;
-        toast.error("Error creating patient...");
+        const response = await patientService.create(values);
+        if (response.data) {
+          loading.value = false;
+          toast.success("Patient created successfully...");
+        } else {
+          loading.value = false;
+          toast.error("Error creating patient...");
+        }
       }
     };
 

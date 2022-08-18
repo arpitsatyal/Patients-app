@@ -5,5 +5,9 @@ import Toast from "vue-toastification";
 import Antd from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
 import "vue-toastification/dist/index.css";
+import CreatePatient from './pages/CreatePatient.vue';
 
-createApp(App).use(router).use(Antd).use(Toast).mount("#app");
+const app = createApp(App);
+app.component('CreatePatient', CreatePatient); 
+
+app.use(router).use(Antd).use(Toast).mount("#app");

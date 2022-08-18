@@ -63,7 +63,7 @@ export const update = async (
 ): Promise<PatientResponse> => {
   try {
     const { data } = await axios.put(
-      `backend/api/patients/${id}`,
+      `http://localhost:4200/api/patients/${id}`,
       {
         body,
       },

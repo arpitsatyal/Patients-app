@@ -27,7 +27,9 @@
 
         <template v-else-if="column.key === 'action'">
           <span class="pointer">
-            <EditOutlined style="margin-right: 10px" />
+            <router-link :to="{ name: 'UpdatePatient', params: { id: record.id } }">
+              <EditOutlined style="margin-right: 10px" />
+            </router-link>
             <a-divider type="vertical" />
             <DeleteOutlined @click="deletePatient(record.id)" />
             <a-divider type="vertical" />

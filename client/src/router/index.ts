@@ -3,6 +3,7 @@ import Login from "../pages/Login.vue";
 import Signup from "../pages/Signup.vue";
 import Dashboard from "../pages/Dashboard.vue";
 import CreatePatient from '../pages/CreatePatient.vue';
+import UpdatePatient from '../pages/UpdatePatient.vue';
 import PatientProfile from '../pages/PatientProfile.vue';
 import { canUserAccess } from "@/utils/isAuthorized";
 
@@ -29,6 +30,14 @@ const routes = [
     path: "/add-patient",
     name: "CreatePatient",
     component: CreatePatient,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/edit-patient/:id",
+    name: "UpdatePatient",
+    component: UpdatePatient,
     meta: {
       requiresAuth: true,
     },
