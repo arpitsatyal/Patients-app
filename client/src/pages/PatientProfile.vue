@@ -6,21 +6,18 @@
         <div class="details">
           <img :src="patient.image" alt="John Doe" class="profile-pic" />
           <h1 class="heading">{{ patient.firstName }} {{ patient.lastName }}</h1>
-          <div class="location">
-            <p>{{ patient.address }}</p>
-          </div>
-          <div class="stats">
+
+          <div class="stats fontClass">
             <div class="col-4">
-              <p>Email</p>
+              <MailOutlined class="iconSize" />
               <h4>{{ patient.email }}</h4>
             </div>
             <div class="col-4">
-              <p>DOB</p>
-
-              <h4>{{ patient.dob }}</h4>
+              <HomeOutlined class="iconSize" />
+              <h4>{{ patient.address }}</h4>
             </div>
             <div class="col-4">
-              <p>Contact</p>
+              <PhoneOutlined class="iconSize" />
               <h4>{{ patient.contact }}</h4>
             </div>
           </div>
@@ -30,20 +27,25 @@
 
     <section>
       <h2 class="center mx-20">Allergies</h2>
-      <table>
-        <thead>
-          <tr class="table-headers">
-            <th>Name</th>
-            <th>Number</th>
-          </tr>
-        </thead>
-        <template :key="allergy" v-for="allergy in patient.allergies">
-          <tbody>
-            <td>{{ allergy }}</td>
-            <td>2489</td>
-          </tbody>
-        </template>
-      </table>
+      <template v-if="patient.allergies.length">
+        <table>
+          <thead class="center">
+            <tr class="table-headers">
+              <th>Name</th>
+              <th>Date diagnosed</th>
+            </tr>
+          </thead>
+          <template :key="allergy" v-for="allergy in patient.allergies">
+            <tbody class="center">
+              <td>{{ allergy }}</td>
+              <td>{{ new Date(patient.createdAt) }}</td>
+            </tbody>
+          </template>
+        </table>
+      </template>
+      <template v-else>
+        <p class="center">There are no allergies for this patient as of now.</p>
+      </template>
     </section>
   </div>
 </template>
@@ -53,10 +55,14 @@ import { IPatient } from "@/types/patients";
 import { defineComponent } from "@vue/runtime-core";
 import Header from "../components/Header.vue";
 import * as patientService from "../services/patients";
+import { HomeOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons-vue";
 
 export default defineComponent({
   components: {
     Header,
+    HomeOutlined,
+    MailOutlined,
+    PhoneOutlined,
   },
   data() {
     return {

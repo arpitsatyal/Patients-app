@@ -32,5 +32,6 @@ model Patient {
   authorId Int 
   allergies String[]
   specialAttention Boolean @default(false)
+  createdAt DateTime @default(now())
 }
 

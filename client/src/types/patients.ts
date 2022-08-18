@@ -10,6 +10,7 @@ export interface IPatient {
   image: string;
   specialAttention: boolean;
   allergies: string[];
+  createdAt: Date;
 }
 
 export interface IPatientResponse extends IPatient {

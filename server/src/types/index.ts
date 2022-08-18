@@ -16,6 +16,7 @@ export interface IPatient {
     image: any,
     authorId: number,
     specialAttention: boolean,
-    allergies: string[]
+    allergies: string[],
+    createdAt: Date;
 }
 
