@@ -4,8 +4,8 @@
     <a-page-header
       style="border: 1px solid rgb(235, 237, 240)"
       title="Patient Profile Manegement"
-      sub-title="Manage all your patients here!"
     >
+      <span>Manage all your patients here!</span>
       <template #extra>
         <a-menu mode="horizontal">
           <a-sub-menu>
@@ -13,7 +13,7 @@
               <setting-outlined />
             </template>
             <template #title>Settings</template>
-            <a-menu-item-group>
+            <a-menu-item-group title="Actions">
               <a-menu-item @click="logout()">Logout</a-menu-item>
             </a-menu-item-group>
           </a-sub-menu>

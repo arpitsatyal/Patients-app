@@ -17,6 +17,20 @@ export const getAll = async (): Promise<IPatientResponse[]> => {
   }
 };
 
+export const getOne = async (id: number): Promise<IPatientResponse> => {
+  try {
+    const { data } = await axios.get(`backend/api/patients/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getFromLS("token")}`,
+      },
+    });
+    return data;
+  } catch (error: any) {
+    throw new Error("something went wrong");
+  }
+};
+
 export const create = async (body: IPatient): Promise<IPatientResponse> => {
   try {
     const { data } = await axios.post(

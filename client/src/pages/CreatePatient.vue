@@ -1,6 +1,6 @@
 <template>
   <Header />
-  <section class="mt-60">
+  <section class="mt-30">
     <a-form
       :model="formState"
       name="validate_other"
