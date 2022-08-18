@@ -1,5 +1,8 @@
 <template>
   <Header />
+  <h2 class="center">
+    {{ paramId ? "Edit Patient" : "Add a New Patient" }}
+  </h2>
   <section class="mt-30">
     <a-form
       :model="formState"

@@ -13,7 +13,7 @@ export const getAll = async () => {
       },
       {
         firstName: "asc",
-      }
+      },
     ],
   });
   return allPatients;
@@ -61,11 +61,19 @@ export const create = async (body: IPatient, currentUser: IUser) => {
 
 export const update = async (id: number, body: IPatient) => {
   const patient = await getOne(id);
+  let toUpdate = body;
+  let image: string;
+
+  if (body.image) {
+    const iData = body.image[0].thumbUrl;
+    image = await uploadImage(iData);
+    toUpdate = { ...body, image };
+  }
   const updatedPatient = await prisma.patient.update({
     where: {
       email: patient.email,
     },
-    data: body,
+    data: toUpdate,
   });
   return updatedPatient;
 };

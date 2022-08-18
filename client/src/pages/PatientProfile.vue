@@ -46,7 +46,7 @@
         <template :key="allergy" v-for="allergy in patient.allergies">
           <tbody class="center">
             <td>{{ allergy }}</td>
-            <td>{{ new Date(patient.createdAt) }}</td>
+            <td>{{ parseDate() }}</td>
           </tbody>
         </template>
       </table>
@@ -88,6 +88,18 @@ export default defineComponent({
       if (response.data) {
         this.patient = response.data;
       }
+    },
+    parseDate(): string {
+      const parsedDate = new Date(this.patient.createdAt);
+      let month: string | number = parsedDate.getMonth();
+      let date: string | number = parsedDate.getDay();
+      const year = parsedDate.getFullYear();
+      if (month < 10 || date < 10) {
+        month = `0${month}`;
+        date = `0${date}`;
+      }
+      const formattedDate = `${year}-${month}-${date}`;
+      return formattedDate;
     },
   },
   async created() {
