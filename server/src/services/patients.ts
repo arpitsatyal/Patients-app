@@ -22,7 +22,7 @@ export const getOne = async (id: number) => {
 };
 
 export const create = async (body: IPatient, currentUser: IUser) => {
-  const { firstName, lastName, email, password, contact, address, dob } = body;
+  const { firstName, lastName, email, password, contact, address, dob, allergies } = body;
   const authorId = currentUser.id;
   let image: string;
 
@@ -41,6 +41,7 @@ export const create = async (body: IPatient, currentUser: IUser) => {
       dob,
       image,
       authorId,
+      allergies
     },
   });
   return user;

@@ -14,6 +14,8 @@ export interface IPatient {
     address: string,
     dob: string,
     image: any,
-    authorId: number
+    authorId: number,
+    specialAttention: boolean,
+    allergies: string[]
 }
 

@@ -59,6 +59,28 @@
       </a-form-item>
 
       <a-form-item
+        name="allergies"
+        label="Allergies"
+        :rules="[
+          {
+            required: true,
+            message: 'Please select allergies',
+            type: 'array',
+          },
+        ]"
+      >
+        <a-select
+          v-model:value="formState['allergies']"
+          mode="multiple"
+          placeholder="Please select allergies"
+        >
+          <template :key="allergy" v-for="allergy in allergiesList">
+            <a-select-option :value="allergy">{{ allergy }}</a-select-option>
+          </template>
+        </a-select>
+      </a-form-item>
+
+      <a-form-item
         name="address"
         label="Address"
         has-feedback
@@ -107,7 +129,18 @@ export default defineComponent({
       labelCol: { span: 6 },
       wrapperCol: { span: 14 },
     };
-
+    const allergiesList = [
+      "Crustacean Allergies",
+      "Gluten Allergies",
+      "Egg Allergies",
+      "Peanut Allergies",
+      "Milk Allergies",
+      "Pet Allergies",
+      "Pollen Allergies",
+      "Dust Mite Allergies",
+      "Mold Allergies",
+      "Sulfite Allergies",
+    ];
     const formState = reactive<Record<string, any>>({});
     const onFinish = async (values: any) => {
       const response = await patientService.create(values);
@@ -120,6 +153,7 @@ export default defineComponent({
       console.log("Failed:", errorInfo);
     };
     return {
+      allergiesList,
       formState,
       onFinish,
       onFinishFailed,
