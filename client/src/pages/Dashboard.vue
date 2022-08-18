@@ -1,15 +1,17 @@
 <template>
-  <h1>Patients</h1>
+  <Header />
   <a-button type="primary" shape="round" :size="size">
     <router-link to="/add-patient">Add Patient</router-link>
   </a-button>
   <a-table :columns="columns" :data-source="patients">
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'firstName'">
-        <a> {{ record.firstName }} {{ record.lastName }} </a>
+        <router-link :to="{ name: 'PatientProfile', params: { id: record.id } }">
+          {{ record.firstName }} {{ record.lastName }}
+        </router-link>
       </template>
 
-      <template v-else-if="column.key === 'fav'">
+      <template v-else-if="column.key === 'specialAttention'">
         <span class="pointer">
           <template v-if="record.specialAttention">
             <HeartFilled @click="markAsSpecial(record.id, false)" />
@@ -44,6 +46,7 @@ import {
 } from "@ant-design/icons-vue";
 import type { SizeType } from "ant-design-vue/es/config-provider";
 import { useToast } from "vue-toastification";
+import Header from "@/components/Header.vue";
 
 const columns = [
   {
@@ -68,7 +71,7 @@ const columns = [
   },
   {
     title: "Special Attention",
-    key: "fav",
+    key: "specialAttention",
   },
   {
     title: "Action",
@@ -88,6 +91,7 @@ export default defineComponent({
     DeleteOutlined,
     HeartOutlined,
     HeartFilled,
+    Header,
   },
   setup() {
     const toast = useToast();

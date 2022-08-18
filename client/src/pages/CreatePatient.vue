@@ -1,4 +1,5 @@
 <template>
+  <Header />
   <section class="mt-60">
     <a-form
       :model="formState"
@@ -93,10 +94,12 @@ import { defineComponent, reactive } from "vue";
 import { UploadOutlined } from "@ant-design/icons-vue";
 import * as patientService from "../services/patients";
 import { useToast } from "vue-toastification";
+import Header from "@/components/Header.vue";
 
 export default defineComponent({
   components: {
     UploadOutlined,
+    Header,
   },
   setup() {
     const toast = useToast();

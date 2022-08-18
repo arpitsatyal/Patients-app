@@ -6,7 +6,13 @@ import uploadImage from "../utils/uploadImage";
 const prisma = new PrismaClient();
 
 export const getAll = async () => {
-  const allPatients = await prisma.patient.findMany({});
+  const allPatients = await prisma.patient.findMany({
+    orderBy: [
+      {
+        specialAttention: 'desc',
+      },
+    ],
+  });
   return allPatients;
 };
 

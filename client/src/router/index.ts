@@ -3,6 +3,8 @@ import Login from "../pages/Login.vue";
 import Signup from "../pages/Signup.vue";
 import Dashboard from "../pages/Dashboard.vue";
 import CreatePatient from '../pages/CreatePatient.vue';
+import PatientProfile from '../pages/PatientProfile.vue';
+import { canUserAccess } from "@/utils/isAuthorized";
 
 const routes = [
   {
@@ -31,17 +33,20 @@ const routes = [
       requiresAuth: true,
     },
   },
+  {
+    path: "/profile/:id",
+    name: "PatientProfile",
+    component: PatientProfile,
+    meta: {
+      requiresAuth: true,
+    },
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
-
-function canUserAccess() {
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  return user.accessToken ? true : false;
-}
 
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
