@@ -2,7 +2,9 @@
   <div class="container">
     <div class="form">
       <form @submit="onSubmit" class="login-form">
-        <input v-model="name" type="text" name="name" placeholder="Name" />
+        <template v-if="!isLogin">
+          <input v-model="name" type="text" name="name" placeholder="Name" />
+        </template>
         <input v-model="email" type="text" name="email" placeholder="Email" />
         <input
           v-model="password"
@@ -10,10 +12,18 @@
           name="password"
           placeholder="Password"
         />
-        <button type="submit" class="btn">Sign up</button>
-        <p class="message">
-          Go Back to <router-link to="/">Login</router-link>
-        </p>
+        <template v-if="isLogin">
+          <button type="submit" class="btn">Login</button>
+          <p class="message">
+            Not registered yet? <router-link to="/signup">Sign Up</router-link>
+          </p>
+        </template>
+        <template v-else>
+          <button type="submit" class="btn">Sign up</button>
+          <p class="message">
+            Go Back to <router-link to="/">Login</router-link>
+          </p>
+        </template>
       </form>
     </div>
   </div>
@@ -28,6 +38,9 @@ import { useToast } from "vue-toastification";
 export default defineComponent({
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Signup",
+  props: {
+    isLogin: Boolean,
+  },
   setup() {
     const toast = useToast();
     return { toast };
@@ -42,20 +55,34 @@ export default defineComponent({
   methods: {
     async onSubmit(e: Event) {
       e.preventDefault();
-       if(!this.email && !this.password) {
-        this.toast('Please enter email and password.');
+      if (!this.email && !this.password) {
+        this.toast("Please enter email and password.");
         return;
       }
-      const response = await authService.signup({
-        name: this.name,
-        email: this.email,
-        password: this.password,
-      });
-      if (response.data) {
-        this.toast.success("Sign up successful! Now login.");
-        setTimeout(() => router.push("/"), 3000);
+      if (this.isLogin) {
+        const response = await authService.login({
+          email: this.email,
+          password: this.password,
+        });
+        if (response.data) {
+          this.toast.success("Logged in successfully!");
+          localStorage.setItem("user", JSON.stringify(response.data));
+          setTimeout(() => router.push("/dashboard"), 3000);
+        } else {
+          this.toast.error(response.message);
+        }
       } else {
-        this.toast.error(response.message);
+        const response = await authService.signup({
+          name: this.name,
+          email: this.email,
+          password: this.password,
+        });
+        if (response.data) {
+          this.toast.success("Sign up successful! Now login.");
+          setTimeout(() => router.push("/"), 3000);
+        } else {
+          this.toast.error(response.message);
+        }
       }
     },
   },

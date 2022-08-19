@@ -6,8 +6,11 @@ import Antd from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
 import "vue-toastification/dist/index.css";
 import CreatePatient from './pages/CreatePatient.vue';
+import Signup from './pages/Signup.vue';
 
 const app = createApp(App);
 app.component('CreatePatient', CreatePatient); 
+// eslint-disable-next-line vue/multi-word-component-names
+app.component('Signup', Signup);
 
 app.use(router).use(Antd).use(Toast).mount("#app");
