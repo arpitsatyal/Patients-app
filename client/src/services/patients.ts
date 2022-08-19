@@ -1,14 +1,6 @@
 import { IPatientResponse, IPatient } from "../types/patients";
-import axios, { AxiosResponse } from "axios";
-import { getFromLS } from "@/utils/localStorage";
-
-const instance = axios.create({
-  baseURL: "http://localhost:4200/api/patients",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${getFromLS("token")}`,
-  },
-});
+import { AxiosResponse } from "axios";
+import instance from "@/utils/axios";
 
 const responseBody = (response: AxiosResponse) => response.data;
 
@@ -34,14 +26,14 @@ const patientRequests = {
 };
 
 export const Patient = {
-  getPatients: (): Promise<IPatientResponse[]> => patientRequests.get(""),
-  getPatient: (id: number): Promise<IPatientResponse> => patientRequests.get(`/${id}`),
+  getPatients: (): Promise<IPatientResponse[]> => patientRequests.get("/patients"),
+  getPatient: (id: number): Promise<IPatientResponse> => patientRequests.get(`/patients/${id}`),
   addPatient: (patient: IPatient): Promise<IPatientResponse> =>
-    patientRequests.post(``, patient),
+    patientRequests.post(`/patients`, patient),
   updatePatient: (patient: IPatient, id: number): Promise<IPatientResponse> =>
-    patientRequests.put(`/${id}`, patient),
+    patientRequests.put(`/patients/${id}`, patient),
   deletePatient: (id: number): Promise<void> =>
-    patientRequests.delete(`/${id}`),
+    patientRequests.delete(`/patients/${id}`),
   markAsSpecial: (body: boolean, id: number): Promise<any> =>
-    patientRequests.markAsSpecial(`/mark-as-special/${id}`, body),
+    patientRequests.markAsSpecial(`/patients/mark-as-special/${id}`, body),
 };

@@ -63,21 +63,13 @@ const router = createRouter({
   routes,
 });
 
-
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  //redirect to dashboard if user is logged in
   if (!requiresAuth && canUserAccess()) {
+    // redirect if user is logged in
     next("/dashboard");
-  } else {
-    next();
-  }
-});
-
-router.beforeEach((to, from, next) => {
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  // Check for protected route
-  if (requiresAuth && !canUserAccess()) {
+  } else if (requiresAuth && !canUserAccess()) {
+    // Check for protected route
     next("");
   } else {
     next();

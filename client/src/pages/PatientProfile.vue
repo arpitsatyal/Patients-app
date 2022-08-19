@@ -46,7 +46,7 @@
         <template :key="allergy" v-for="allergy in patient.allergies">
           <tbody class="center">
             <td>{{ allergy }}</td>
-            <td>{{ parseDate() }}</td>
+            <td>{{ parseDate(patient.createdAt) }}</td>
           </tbody>
         </template>
       </table>
@@ -65,6 +65,7 @@ import { HomeOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons-vue
 import { Patient } from "@/services/patients";
 import { useToast } from "vue-toastification";
 import { toastError } from "../utils/toastError";
+import { parseDate } from "../utils/parseDate";
 
 export default defineComponent({
   components: {
@@ -75,6 +76,7 @@ export default defineComponent({
   },
   data() {
     return {
+      parseDate,
       patient: {} as IPatientResponse,
     };
   },
@@ -95,18 +97,6 @@ export default defineComponent({
           }
         })
         .catch((err) => toastError(err));
-    },
-    parseDate(): string {
-      const parsedDate = new Date(this.patient.createdAt);
-      let month: string | number = parsedDate.getMonth();
-      let date: string | number = parsedDate.getDay();
-      const year = parsedDate.getFullYear();
-      if (month < 10 || date < 10) {
-        month = `0${month}`;
-        date = `0${date}`;
-      }
-      const formattedDate = `${year}-${month}-${date}`;
-      return formattedDate;
     },
   },
   async created() {
