@@ -156,7 +156,7 @@ export default defineComponent({
     },
   },
   async created() {
-    this.fetchAllPatients();
+    await this.fetchAllPatients();
   },
   inheritAttrs: false, // disable 'non-props' warning
 });
