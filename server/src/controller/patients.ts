@@ -51,7 +51,7 @@ export const updatePatient = async (
       Number(req.params.id),
       req.body?.body
     );
-    res.status(200).json(updatePatient);
+    res.status(200).json(updatedPatient);
   } catch (e) {
     next(e);
   }

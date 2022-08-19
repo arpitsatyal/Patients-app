@@ -17,13 +17,15 @@
           placeholder="Password"
         />
         <template v-if="isLogin">
-          <button type="submit" class="btn">Login</button>
+          <button type="submit" class="btn" v-if="!loading">Login</button>
+          <button type="submit" class="btn" v-else>Logging in...</button>
           <p class="message">
             Not registered yet? <router-link to="/signup">Sign Up</router-link>
           </p>
         </template>
         <template v-else>
-          <button type="submit" class="btn">Sign up</button>
+          <button type="submit" class="btn" v-if="!loading">Sign up</button>
+          <button type="submit" class="btn" v-else>Signing up....</button>
           <p class="message">Go Back to <router-link to="/">Login</router-link></p>
         </template>
       </form>
@@ -33,7 +35,7 @@
 
 <script lang="ts">
 import router from "@/router";
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent, ref } from "@vue/runtime-core";
 import { authService } from "../services/auth";
 import { useToast } from "vue-toastification";
 import { toastError } from "../utils/toastError";
@@ -45,8 +47,9 @@ export default defineComponent({
     isLogin: Boolean,
   },
   setup() {
+    const loading = ref<boolean>(false);
     const toast = useToast();
-    return { toast };
+    return { toast, loading };
   },
   data() {
     return {
@@ -59,18 +62,24 @@ export default defineComponent({
     async onSubmit(e: Event) {
       e.preventDefault();
       if (this.isLogin) {
+        this.loading = true;
         authService
           .login({
             email: this.email,
             password: this.password,
           })
           .then((response) => {
+            this.loading = false;
             this.toast.success(response.message);
             localStorage.setItem("user", JSON.stringify(response.data));
             setTimeout(() => router.push("/dashboard"), 3000);
           })
-          .catch((err) => toastError(err));
+          .catch((err) => {
+            this.loading = false;
+            toastError(err);
+          });
       } else {
+        this.loading = true;
         authService
           .signup({
             name: this.name,
@@ -78,10 +87,14 @@ export default defineComponent({
             password: this.password,
           })
           .then((response) => {
+            this.loading = false;
             this.toast.success(response.message);
             setTimeout(() => router.push("/dashboard"), 3000);
           })
-          .catch((err) => toastError(err));
+          .catch((err) => {
+            this.loading = false;
+            toastError(err);
+          });
       }
     },
   },

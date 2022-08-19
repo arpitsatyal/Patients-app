@@ -22,7 +22,7 @@ const patientRequests = {
       })
       .then(responseBody),
 
-  delete: (url: string) => instance.delete<void>(url).then(responseBody),
+  delete: (url: string) => instance.delete<any>(url).then(responseBody),
 };
 
 export const Patient = {
@@ -32,7 +32,7 @@ export const Patient = {
     patientRequests.post(`/patients`, patient),
   updatePatient: (patient: IPatient, id: number): Promise<IPatientResponse> =>
     patientRequests.put(`/patients/${id}`, patient),
-  deletePatient: (id: number): Promise<void> =>
+  deletePatient: (id: number): Promise<any> =>
     patientRequests.delete(`/patients/${id}`),
   markAsSpecial: (body: boolean, id: number): Promise<any> =>
     patientRequests.markAsSpecial(`/patients/mark-as-special/${id}`, body),

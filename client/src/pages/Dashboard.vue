@@ -5,7 +5,7 @@
       <router-link to="/add-patient">Add Patient</router-link>
     </a-button>
   </div>
-  <section class="mt-30">
+  <section class="mt-30" v-if="patients.length">
     <a-table :columns="columns" :data-source="patients" :pagination="false">
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'firstName'">
@@ -41,6 +41,10 @@
       </template>
     </a-table>
   </section>
+  <div v-else class="example">
+    <h2 class="mb-20">loading...</h2>
+    <a-spin />
+  </div>
 </template>
 
 <script lang="ts">
@@ -164,4 +168,11 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "../assets/global.scss";
+.example {
+  text-align: center;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  padding: 30px 50px;
+  margin: 100px 0;
+}
 </style>

@@ -1,6 +1,5 @@
-import { IUser } from "./../types/index";
+import { IUser, IPatient } from "./../types/index";
 import { PrismaClient } from "@prisma/client";
-import { IPatient } from "../types";
 import uploadImage from "../utils/uploadImage";
 
 const prisma = new PrismaClient();
@@ -34,15 +33,8 @@ export const getOne = async (id: number) => {
 export const create = async (body: IPatient, currentUser: IUser) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const {
-        firstName,
-        lastName,
-        email,
-        contact,
-        address,
-        dob,
-        allergies,
-      } = body;
+      const { firstName, lastName, email, contact, address, dob, allergies } =
+        body;
       const authorId = currentUser.id;
       let image: string;
 
@@ -104,6 +96,7 @@ export const remove = (id: number) => {
           email: patient.email,
         },
       });
+      resolve(true);
     } catch (e) {
       reject(e);
     }
