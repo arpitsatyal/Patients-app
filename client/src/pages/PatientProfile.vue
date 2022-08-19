@@ -58,11 +58,12 @@
 </template>
 
 <script lang="ts">
-import { IPatient } from "@/types/patients";
+import { IPatientResponse } from "@/types/patients";
 import { defineComponent } from "@vue/runtime-core";
 import Header from "../components/Header.vue";
-import * as patientService from "../services/patients";
 import { HomeOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons-vue";
+import { Patient } from "@/services/patientService";
+import { useToast } from "vue-toastification";
 
 export default defineComponent({
   components: {
@@ -73,21 +74,29 @@ export default defineComponent({
   },
   data() {
     return {
-      patient: {} as IPatient,
+      patient: {} as IPatientResponse,
     };
   },
   setup() {
+    const toast = useToast();
     const paramId = new URL(location.href).pathname.split("/")[2];
     return {
+      toast,
       paramId,
     };
   },
   methods: {
     async getPatient() {
-      const response = await patientService.getOne(Number(this.paramId));
-      if (response.data) {
-        this.patient = response.data;
-      }
+      Patient.getPatient(Number(this.paramId))
+        .then((data) => {
+          if (data) {
+            this.patient = data;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          this.toast.error(err.response.data.error);
+        });
     },
     parseDate(): string {
       const parsedDate = new Date(this.patient.createdAt);

@@ -8,9 +8,7 @@ export const getPatients = async (
 ) => {
   try {
     const allPatients = await patientService.getAll();
-    res.status(200).json({
-      data: allPatients,
-    });
+    res.status(200).json(allPatients);
   } catch (e) {
     next(e);
   }
@@ -23,9 +21,7 @@ export const getPatient = async (
 ) => {
   try {
     const patient = await patientService.getOne(Number(req.params.id));
-    res.status(200).json({
-      data: patient,
-    });
+    res.status(200).json(patient);
   } catch (e) {
     next(e);
   }
@@ -39,7 +35,7 @@ export const createPatient = async (
   try {
     const currentUser = (req as any).user;
     const newPatient = await patientService.create(req.body?.body, currentUser);
-    res.status(200).json({ data: newPatient });
+    res.status(200).json(newPatient);
   } catch (e) {
     next(e);
   }
@@ -55,9 +51,7 @@ export const updatePatient = async (
       Number(req.params.id),
       req.body?.body
     );
-    res.status(200).json({
-      data: updatedPatient,
-    });
+    res.status(200).json(updatePatient);
   } catch (e) {
     next(e);
   }

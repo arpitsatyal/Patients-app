@@ -144,10 +144,10 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
 import { UploadOutlined } from "@ant-design/icons-vue";
-import * as patientService from "../services/patients";
 import { useToast } from "vue-toastification";
 import Header from "@/components/Header.vue";
 import { IPatient } from "@/types/patients";
+import { Patient } from "@/services/patientService";
 
 export default defineComponent({
   props: {
@@ -184,23 +184,27 @@ export default defineComponent({
     const onFinish = async (values: IPatient) => {
       loading.value = true;
       if (props.paramId) {
-        const response = await patientService.update(values, Number(props.paramId));
-        if (response.data) {
-          loading.value = false;
-          toast.success("Patient updated successfully...");
-        } else {
-          loading.value = false;
-          toast.error("Error updating patient...");
-        }
+        Patient.updatePatient(values, Number(props.paramId))
+          .then(() => {
+            loading.value = false;
+            toast.success("Patient updated successfully...");
+          })
+          .catch((err: any) => {
+            console.log(err);
+            loading.value = false;
+            toast.error(err.response.data.error);
+          });
       } else {
-        const response = await patientService.create(values);
-        if (response.data) {
-          loading.value = false;
-          toast.success("Patient created successfully...");
-        } else {
-          loading.value = false;
-          toast.error("Error creating patient...");
-        }
+        Patient.addPatient(values)
+          .then(() => {
+            loading.value = false;
+            toast.success("Patient created successfully...");
+          })
+          .catch((err: any) => {
+            console.log(err);
+            loading.value = false;
+            toast.error(err.response.data.error);
+          });
       }
     };
 

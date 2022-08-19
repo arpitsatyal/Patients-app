@@ -46,7 +46,7 @@
 <script lang="ts">
 import { IPatientResponse } from "@/types/patients";
 import { defineComponent, ref } from "@vue/runtime-core";
-import * as patientService from "../services/patients";
+import { Patient } from "../services/patientService";
 import {
   EditOutlined,
   DeleteOutlined,
@@ -119,28 +119,48 @@ export default defineComponent({
   },
   methods: {
     async deletePatient(id: number) {
-      await patientService.remove(id);
-      this.toast.warning("Patient deleted.");
-      this.fetchAllPatients();
+      Patient.deletePatient(id)
+        .then(() => {
+          this.toast.warning("Patient deleted.");
+          this.fetchAllPatients();
+        })
+        .catch((err) => {
+          console.log(err);
+          this.toast.error(err.response.data.error);
+        });
     },
     async markAsSpecial(patient: IPatientResponse, body: boolean) {
-      await patientService.markAsSpecial(body, patient.id);
-      if (body) {
-        this.toast.success(
-          `Patient ${patient.firstName} ${patient.lastName} marked as special.`
-        );
-      } else {
-        this.toast.warning(
-          `Patient ${patient.firstName} ${patient.lastName} un-marked as special.`
-        );
-      }
+      Patient.markAsSpecial(body, patient.id)
+        .then(() => {
+          if (body) {
+            this.toast.success(
+              `Patient ${patient.firstName} ${patient.lastName} marked as special.`
+            );
+          } else {
+            this.toast.warning(
+              `Patient ${patient.firstName} ${patient.lastName} un-marked as special.`
+            );
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          this.toast.error(err.response.data.error);
+        });
+
       this.fetchAllPatients();
     },
+
     async fetchAllPatients() {
-      const response = await patientService.getAll();
-      if (response) {
-        this.patients = response;
-      }
+      Patient.getPatients()
+        .then((data) => {
+          if (data && data.length) {
+            this.patients = data;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          this.toast.error(err.response.data.error);
+        });
     },
   },
   async created() {
