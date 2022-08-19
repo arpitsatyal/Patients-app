@@ -62,7 +62,7 @@ import { IPatientResponse } from "@/types/patients";
 import { defineComponent } from "@vue/runtime-core";
 import Header from "../components/Header.vue";
 import { HomeOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons-vue";
-import { Patient } from "@/services/patientService";
+import { Patient } from "@/services/patients";
 import { useToast } from "vue-toastification";
 
 export default defineComponent({

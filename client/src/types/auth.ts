@@ -4,19 +4,15 @@ export interface IUser {
   password: string;
 }
 
-interface ILoginResponse {
-  accessToken: string;
-  user: ISignUpResponse;
-}
-export interface LoginResponse {
-  data: ILoginResponse | null;
-  message: string;
-}
-
 export interface ISignUpResponse extends IUser {
   id: number;
 }
+type AuthResponseData = {
+  accessToken?: string;
+  user: IUser;
+}
+
 export interface SignUpResponse {
-  data: ISignUpResponse | null;
+  data: AuthResponseData,
   message: string;
 }

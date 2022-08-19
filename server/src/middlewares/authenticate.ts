@@ -1,7 +1,7 @@
 import jwt, { Secret } from "jsonwebtoken";
 import { IUser } from "../types/index";
 import { Request, Response, NextFunction } from "express";
-import { getUser } from "../controller/auth";
+import { getUser } from "../services/auth";
 
 const SECRET_KEY: Secret = process.env.JWT_SECRET;
 

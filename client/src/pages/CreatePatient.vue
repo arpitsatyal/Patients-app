@@ -147,7 +147,7 @@ import { UploadOutlined } from "@ant-design/icons-vue";
 import { useToast } from "vue-toastification";
 import Header from "@/components/Header.vue";
 import { IPatient } from "@/types/patients";
-import { Patient } from "@/services/patientService";
+import { Patient } from "@/services/patients";
 
 export default defineComponent({
   props: {

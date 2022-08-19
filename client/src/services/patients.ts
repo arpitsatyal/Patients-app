@@ -1,10 +1,9 @@
-import { IPatientResponse, IPatient } from "./../types/patients";
+import { IPatientResponse, IPatient } from "../types/patients";
 import axios, { AxiosResponse } from "axios";
 import { getFromLS } from "@/utils/localStorage";
 
 const instance = axios.create({
   baseURL: "http://localhost:4200/api/patients",
-  timeout: 15000,
   headers: {
     "Content-Type": "application/json",
     Authorization: `Bearer ${getFromLS("token")}`,

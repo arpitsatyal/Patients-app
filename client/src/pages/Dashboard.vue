@@ -46,7 +46,7 @@
 <script lang="ts">
 import { IPatientResponse } from "@/types/patients";
 import { defineComponent, ref } from "@vue/runtime-core";
-import { Patient } from "../services/patientService";
+import { Patient } from "../services/patients";
 import {
   EditOutlined,
   DeleteOutlined,
@@ -136,18 +136,18 @@ export default defineComponent({
             this.toast.success(
               `Patient ${patient.firstName} ${patient.lastName} marked as special.`
             );
+            this.fetchAllPatients();
           } else {
             this.toast.warning(
               `Patient ${patient.firstName} ${patient.lastName} un-marked as special.`
             );
+            this.fetchAllPatients();
           }
         })
         .catch((err) => {
           console.log(err);
           this.toast.error(err.response.data.error);
         });
-
-      this.fetchAllPatients();
     },
 
     async fetchAllPatients() {

@@ -34,7 +34,7 @@
 <script lang="ts">
 import router from "@/router";
 import { defineComponent } from "@vue/runtime-core";
-import * as authService from "../services/auth";
+import { authService } from "../services/auth";
 import { useToast } from "vue-toastification";
 
 export default defineComponent({
@@ -62,29 +62,37 @@ export default defineComponent({
         return;
       }
       if (this.isLogin) {
-        const response = await authService.login({
-          email: this.email,
-          password: this.password,
-        });
-        if (response.data) {
-          this.toast.success("Logged in successfully!");
-          localStorage.setItem("user", JSON.stringify(response.data));
-          setTimeout(() => router.push("/dashboard"), 3000);
-        } else {
-          this.toast.error(response.message);
-        }
+        authService
+          .login({
+            email: this.email,
+            password: this.password,
+          })
+          .then((response) => {
+            console.log(response);
+            this.toast.success(response.message);
+            localStorage.setItem("user", JSON.stringify(response.data));
+            setTimeout(() => router.push("/dashboard"), 3000);
+          })
+          .catch((err) => {
+            console.log(err);
+            this.toast.error(err.response.data.error);
+          });
       } else {
-        const response = await authService.signup({
-          name: this.name,
-          email: this.email,
-          password: this.password,
-        });
-        if (response.data) {
-          this.toast.success("Sign up successful! Now login.");
-          setTimeout(() => router.push("/"), 3000);
-        } else {
-          this.toast.error(response.message);
-        }
+        authService
+          .signup({
+            name: this.name,
+            email: this.email,
+            password: this.password,
+          })
+          .then((response) => {
+            console.log(response);
+            this.toast.success(response.message);
+            setTimeout(() => router.push("/dashboard"), 3000);
+          })
+          .catch((err) => {
+            console.log(err);
+            this.toast.error(err.response.data.error);
+          });
       }
     },
   },
