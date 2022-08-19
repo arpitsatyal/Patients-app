@@ -121,6 +121,9 @@ export const markAsSpecial = async (
     );
     return data;
   } catch (error: any) {
-    throw new Error("something went wrong");
+    return {
+      data: null,
+      messsage: error.message,
+    };
   }
 };

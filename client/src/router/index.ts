@@ -2,9 +2,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import Login from "../pages/Login.vue";
 import Signup from "../pages/Signup.vue";
 import Dashboard from "../pages/Dashboard.vue";
-import CreatePatient from '../pages/CreatePatient.vue';
-import UpdatePatient from '../pages/UpdatePatient.vue';
-import PatientProfile from '../pages/PatientProfile.vue';
+import CreatePatient from "../pages/CreatePatient.vue";
+import UpdatePatient from "../pages/UpdatePatient.vue";
+import PatientProfile from "../pages/PatientProfile.vue";
 import { canUserAccess } from "@/utils/isAuthorized";
 
 const routes = [
@@ -12,11 +12,17 @@ const routes = [
     path: "/",
     name: "Login",
     component: Login,
+    meta: {
+      requiresAuth: false,
+    },
   },
   {
     path: "/signup",
     name: "Sign Up",
     component: Signup,
+    meta: {
+      requiresAuth: false,
+    },
   },
   {
     path: "/dashboard",
@@ -55,6 +61,17 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  //redirect to dashboard if user is logged in
+  if (!requiresAuth && canUserAccess()) {
+    next("/dashboard");
+  } else {
+    next();
+  }
 });
 
 router.beforeEach((to, from, next) => {
