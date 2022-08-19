@@ -21,7 +21,7 @@ export const register = async (
 ) => {
   try {
     const data = await authService.register(req.body.body);
-    res.status(200).json(data);
+    res.status(201).json(data);
   } catch (e) {
     next(e);
   }

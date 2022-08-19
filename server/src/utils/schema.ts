@@ -8,7 +8,6 @@ export const userSchema = Joi.object({
 export const patientSchema = Joi.object({
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
-  password: Joi.string().required().min(5),
   email: Joi.string().required().email(),
   contact: Joi.string().required(),
   address: Joi.string().required(),

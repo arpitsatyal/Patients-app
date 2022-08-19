@@ -23,7 +23,6 @@ model Patient {
   firstName String
   lastName String
   email String @unique
-  password String
   contact String
   address String
   dob String

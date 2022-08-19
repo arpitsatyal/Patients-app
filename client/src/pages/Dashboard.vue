@@ -145,7 +145,7 @@ export default defineComponent({
         .catch((err) => toastError(err));
     },
 
-    async fetchAllPatients() {
+    fetchAllPatients() {
       Patient.getPatients()
         .then((data) => {
           if (data && data.length) {
@@ -155,8 +155,8 @@ export default defineComponent({
         .catch((err) => toastError(err));
     },
   },
-  async created() {
-    await this.fetchAllPatients();
+  created() {
+    this.fetchAllPatients();
   },
   inheritAttrs: false, // disable 'non-props' warning
 });

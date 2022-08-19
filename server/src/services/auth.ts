@@ -2,6 +2,7 @@ import { IUser } from "./../types/index";
 import { PrismaClient } from "@prisma/client";
 import { createAccessToken } from "../utils/createAccessToken";
 import { passwordHash, decryptPassword } from "../utils/passwordHash";
+import { exclude } from "../utils/excludField";
 
 const prisma = new PrismaClient();
 
@@ -20,8 +21,9 @@ export const login = (body: IUser) => {
         }
       }
       const accessToken = createAccessToken({ userId: user.id });
+      const userWithoutPassword = exclude(user, 'password');
       resolve({
-        data: { accessToken, user },
+        data: { accessToken, user: userWithoutPassword },
         message: "Logged in successfully...",
       });
     } catch (e) {
@@ -43,8 +45,9 @@ export const register = (body: IUser) => {
           password: hashedPassword,
         },
       });
+      const userWithoutPassword = exclude(user, 'password');
       resolve({
-        data: { user },
+        data: { user: userWithoutPassword },
         message: "sign up completed successfully...",
       });
     } catch (e) {

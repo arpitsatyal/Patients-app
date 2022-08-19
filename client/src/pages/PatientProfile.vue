@@ -89,7 +89,7 @@ export default defineComponent({
     };
   },
   methods: {
-    async getPatient() {
+    getPatient() {
       Patient.getPatient(Number(this.paramId))
         .then((data) => {
           if (data) {
@@ -99,8 +99,8 @@ export default defineComponent({
         .catch((err) => toastError(err));
     },
   },
-  async created() {
-    await this.getPatient();
+  created() {
+    this.getPatient();
   },
 });
 </script>

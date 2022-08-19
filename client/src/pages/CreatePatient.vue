@@ -46,19 +46,6 @@
       </a-form-item>
 
       <a-form-item
-        label="Password"
-        name="password"
-        :rules="[
-          !paramId && {
-            required: true,
-            message: 'Please input your password!',
-          },
-        ]"
-      >
-        <a-input-password v-model:value="formState.password" />
-      </a-form-item>
-
-      <a-form-item
         label="Contact"
         name="contact"
         :rules="[!paramId && { required: true, message: 'Please input your contact!' }]"
@@ -74,30 +61,6 @@
         <a-space direction="vertical" :size="12">
           <a-date-picker value-format="YYYY-MM-DD" v-model:value="formState.dob" />
         </a-space>
-      </a-form-item>
-
-      <a-form-item
-        name="allergies"
-        label="Allergies"
-        :rules="
-          !paramId && [
-            {
-              required: true,
-              message: 'Please select allergies',
-              type: 'array',
-            },
-          ]
-        "
-      >
-        <a-select
-          v-model:value="formState['allergies']"
-          mode="multiple"
-          placeholder="Please select allergies"
-        >
-          <template :key="allergy" v-for="allergy in allergiesList">
-            <a-select-option :value="allergy">{{ allergy }}</a-select-option>
-          </template>
-        </a-select>
       </a-form-item>
 
       <a-form-item
@@ -118,6 +81,18 @@
           <a-select-option value="Kathmandu">Kathmandu</a-select-option>
           <a-select-option value="Bhaktapur">Bhaktapur</a-select-option>
           <a-select-option value="Lalitpur">Lalitpur</a-select-option>
+        </a-select>
+      </a-form-item>
+
+      <a-form-item name="allergies" label="Allergies">
+        <a-select
+          v-model:value="formState['allergies']"
+          mode="multiple"
+          placeholder="Please select allergies"
+        >
+          <template :key="allergy" v-for="allergy in allergiesList">
+            <a-select-option :value="allergy">{{ allergy }}</a-select-option>
+          </template>
         </a-select>
       </a-form-item>
 
