@@ -1,4 +1,8 @@
 <template>
+  <div class="info">
+    <h2>Welcome to Patient Profile Manegement</h2>
+    <p>Please login or sign up to continue.</p>
+  </div>
   <div class="container">
     <div class="form">
       <form @submit="onSubmit" class="login-form">
@@ -20,9 +24,7 @@
         </template>
         <template v-else>
           <button type="submit" class="btn">Sign up</button>
-          <p class="message">
-            Go Back to <router-link to="/">Login</router-link>
-          </p>
+          <p class="message">Go Back to <router-link to="/">Login</router-link></p>
         </template>
       </form>
     </div>
