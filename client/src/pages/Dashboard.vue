@@ -56,6 +56,7 @@ import {
 import type { SizeType } from "ant-design-vue/es/config-provider";
 import { useToast } from "vue-toastification";
 import Header from "@/components/Header.vue";
+import { toastError } from "../utils/toastError";
 
 const columns = [
   {
@@ -124,10 +125,7 @@ export default defineComponent({
           this.toast.warning("Patient deleted.");
           this.fetchAllPatients();
         })
-        .catch((err) => {
-          console.log(err);
-          this.toast.error(err.response.data.error);
-        });
+        .catch((err) => toastError(err));
     },
     async markAsSpecial(patient: IPatientResponse, body: boolean) {
       Patient.markAsSpecial(body, patient.id)
@@ -144,10 +142,7 @@ export default defineComponent({
             this.fetchAllPatients();
           }
         })
-        .catch((err) => {
-          console.log(err);
-          this.toast.error(err.response.data.error);
-        });
+        .catch((err) => toastError(err));
     },
 
     async fetchAllPatients() {
@@ -157,10 +152,7 @@ export default defineComponent({
             this.patients = data;
           }
         })
-        .catch((err) => {
-          console.log(err);
-          this.toast.error(err.response.data.error);
-        });
+        .catch((err) => toastError(err));
     },
   },
   async created() {

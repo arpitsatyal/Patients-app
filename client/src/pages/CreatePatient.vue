@@ -148,6 +148,7 @@ import { useToast } from "vue-toastification";
 import Header from "@/components/Header.vue";
 import { IPatient } from "@/types/patients";
 import { Patient } from "@/services/patients";
+import { toastError } from "../utils/toastError";
 
 export default defineComponent({
   props: {
@@ -190,9 +191,8 @@ export default defineComponent({
             toast.success("Patient updated successfully...");
           })
           .catch((err: any) => {
-            console.log(err);
             loading.value = false;
-            toast.error(err.response.data.error);
+            toastError(err);
           });
       } else {
         Patient.addPatient(values)
@@ -201,9 +201,8 @@ export default defineComponent({
             toast.success("Patient created successfully...");
           })
           .catch((err: any) => {
-            console.log(err);
             loading.value = false;
-            toast.error(err.response.data.error);
+            toastError(err);
           });
       }
     };

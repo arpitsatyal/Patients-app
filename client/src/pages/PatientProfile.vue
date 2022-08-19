@@ -64,6 +64,7 @@ import Header from "../components/Header.vue";
 import { HomeOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons-vue";
 import { Patient } from "@/services/patients";
 import { useToast } from "vue-toastification";
+import { toastError } from "../utils/toastError";
 
 export default defineComponent({
   components: {
@@ -93,10 +94,7 @@ export default defineComponent({
             this.patient = data;
           }
         })
-        .catch((err) => {
-          console.log(err);
-          this.toast.error(err.response.data.error);
-        });
+        .catch((err) => toastError(err));
     },
     parseDate(): string {
       const parsedDate = new Date(this.patient.createdAt);

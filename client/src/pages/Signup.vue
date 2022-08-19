@@ -36,6 +36,7 @@ import router from "@/router";
 import { defineComponent } from "@vue/runtime-core";
 import { authService } from "../services/auth";
 import { useToast } from "vue-toastification";
+import { toastError } from "../utils/toastError";
 
 export default defineComponent({
   // eslint-disable-next-line vue/multi-word-component-names
@@ -57,10 +58,6 @@ export default defineComponent({
   methods: {
     async onSubmit(e: Event) {
       e.preventDefault();
-      if (!this.email && !this.password) {
-        this.toast("Please enter email and password.");
-        return;
-      }
       if (this.isLogin) {
         authService
           .login({
@@ -68,15 +65,11 @@ export default defineComponent({
             password: this.password,
           })
           .then((response) => {
-            console.log(response);
             this.toast.success(response.message);
             localStorage.setItem("user", JSON.stringify(response.data));
             setTimeout(() => router.push("/dashboard"), 3000);
           })
-          .catch((err) => {
-            console.log(err);
-            this.toast.error(err.response.data.error);
-          });
+          .catch((err) => toastError(err));
       } else {
         authService
           .signup({
@@ -85,14 +78,10 @@ export default defineComponent({
             password: this.password,
           })
           .then((response) => {
-            console.log(response);
             this.toast.success(response.message);
             setTimeout(() => router.push("/dashboard"), 3000);
           })
-          .catch((err) => {
-            console.log(err);
-            this.toast.error(err.response.data.error);
-          });
+          .catch((err) => toastError(err));
       }
     },
   },
