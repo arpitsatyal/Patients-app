@@ -1,6 +1,6 @@
 import { decryptPassword, passwordHash } from "../utils/passwordHash";
 
-const password = "12345";
+const password: string = "12345";
 
 describe("password hash", () => {
   it("returns hashed and decrypted password to be equal", async () => {

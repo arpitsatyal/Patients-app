@@ -1,9 +1,9 @@
 import { NextFunction } from 'express';
 import express, { Express, Request, Response, ErrorRequestHandler } from 'express';
 import dotenv from 'dotenv';
-import router from './routes';
 import cors from 'cors';
-const morgan  = require('morgan');
+import morgan from 'morgan';
+import router from './routes';
 
 dotenv.config();
 

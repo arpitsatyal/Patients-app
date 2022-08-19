@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { CustomUserRequest } from "../middlewares/authenticate";
 import * as patientService from "../services/patients";
 
 export const getPatients = async (

@@ -1,11 +1,11 @@
 import { IUser } from "./../types/index";
-import jwt, { Secret, JwtPayload } from "jsonwebtoken";
+import jwt, { Secret } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import { getUser } from "../controller/auth";
 
-export const SECRET_KEY: Secret = process.env.JWT_SECRET;
+const SECRET_KEY: Secret = process.env.JWT_SECRET;
 
-export interface CustomUserRequest extends Request {
+interface CustomUserRequest extends Request {
   user: IUser;
 }
 
@@ -34,6 +34,6 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
       }
     });
   } catch (err) {
-    res.status(401).send("Invalid token");
+    return next("Invalid token");
   }
 };
