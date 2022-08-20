@@ -1,4 +1,4 @@
-*{
+* {
   box-sizing: border-box;
 }
 .mx-20 {
@@ -20,6 +20,16 @@
 .pointer {
   cursor: pointer;
 }
-.iconSize {
+.iconStyle {
   font-size: 150%;
+  color: black;
+}
+.ant-table table {
+  color: black;
+}
+.ant-table table th {
+  font-size: 16px;
+}
+.ant-table table td {
+  font-size: 14px;
 }

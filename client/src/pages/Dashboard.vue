@@ -17,12 +17,12 @@
         <template v-else-if="column.key === 'specialAttention'">
           <span class="pointer">
             <template v-if="record.specialAttention">
-              <EyeOutlined @click="markAsSpecial(record, false)" class="iconSize" />
+              <EyeOutlined @click="markAsSpecial(record, false)" class="iconStyle" />
             </template>
             <template v-else>
               <EyeInvisibleOutlined
                 @click="markAsSpecial(record, true)"
-                class="iconSize"
+                class="iconStyle"
               />
             </template>
           </span>
@@ -31,19 +31,18 @@
         <template v-else-if="column.key === 'action'">
           <span class="pointer">
             <router-link :to="{ name: 'UpdatePatient', params: { id: record.id } }">
-              <EditOutlined style="margin-right: 10px" class="iconSize" />
+              <EditOutlined style="margin-right: 10px" class="iconStyle" />
             </router-link>
             <a-divider type="vertical" />
-            <DeleteOutlined @click="deletePatient(record.id)" class="iconSize" />
+            <DeleteOutlined @click="deletePatient(record.id)" class="iconStyle" />
             <a-divider type="vertical" />
           </span>
         </template>
       </template>
     </a-table>
   </section>
-  <div v-else class="example">
-    <h2 class="mb-20">loading...</h2>
-    <a-spin />
+  <div v-else>
+    <Loading />
   </div>
 </template>
 
@@ -60,6 +59,7 @@ import {
 import type { SizeType } from "ant-design-vue/es/config-provider";
 import { useToast } from "vue-toastification";
 import Header from "@/components/Header.vue";
+import Loading from "../components/Loading.vue";
 import { toastError } from "../utils/toastError";
 import router from "@/router";
 
@@ -113,6 +113,7 @@ export default defineComponent({
     EyeInvisibleOutlined,
     EyeOutlined,
     Header,
+    Loading,
   },
   setup() {
     const toast = useToast();
@@ -173,11 +174,4 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "../assets/global.scss";
-.example {
-  text-align: center;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  padding: 30px 50px;
-  margin: 100px 0;
-}
 </style>

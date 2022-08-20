@@ -18,15 +18,15 @@
 
           <div class="stats fontClass">
             <div class="col-4">
-              <MailOutlined class="iconSize" />
+              <MailOutlined class="iconStyle" />
               <h4>{{ patient.email }}</h4>
             </div>
             <div class="col-4">
-              <HomeOutlined class="iconSize" />
+              <HomeOutlined class="iconStyle" />
               <h4>{{ patient.address }}</h4>
             </div>
             <div class="col-4">
-              <PhoneOutlined class="iconSize" />
+              <PhoneOutlined class="iconStyle" />
               <h4>{{ patient.contact }}</h4>
             </div>
           </div>
@@ -57,9 +57,8 @@
       </template>
     </section>
   </div>
-  <div v-else class="example">
-    <h2 class="mb-20">loading...</h2>
-    <a-spin />
+  <div v-else>
+    <Loading />
   </div>
 </template>
 
@@ -67,6 +66,7 @@
 import { IPatientResponse } from "@/types/patients";
 import { defineComponent } from "@vue/runtime-core";
 import Header from "../components/Header.vue";
+import Loading from "../components/Loading.vue";
 import { HomeOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons-vue";
 import { Patient } from "@/services/patients";
 import { useToast } from "vue-toastification";
@@ -76,6 +76,7 @@ import { parseDate } from "../utils/parseDate";
 export default defineComponent({
   components: {
     Header,
+    Loading,
     HomeOutlined,
     MailOutlined,
     PhoneOutlined,
