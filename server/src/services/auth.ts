@@ -1,6 +1,6 @@
 import { IUser } from "./../types/index";
 import { PrismaClient } from "@prisma/client";
-import { createAccessToken } from "../utils/createAccessToken";
+import { createAccessToken, createRefreshToken } from "../utils/createTokens";
 import { passwordHash, decryptPassword } from "../utils/passwordHash";
 import { exclude } from "../utils/excludField";
 
@@ -12,18 +12,20 @@ export const login = (body: IUser) => {
       const { email, password } = body;
       const user = await prisma.user.findUnique({ where: { email } });
       if (!user) {
-        reject("invalid username or password.");
+        reject({ msg: "invalid email or password"});
       }
       if (user) {
         const decryptedPassword = await decryptPassword(user.password);
         if (decryptedPassword !== password) {
-          reject("invalid username or password.");
+          reject({ msg: "invalid email or password"});
         }
       }
       const accessToken = createAccessToken({ userId: user.id });
+      const refreshToken = createRefreshToken({ userId: user.id });
+
       const userWithoutPassword = exclude(user, 'password');
       resolve({
-        data: { accessToken, user: userWithoutPassword },
+        data: { accessToken, refreshToken, user: userWithoutPassword },
         message: "Logged in successfully...",
       });
     } catch (e) {

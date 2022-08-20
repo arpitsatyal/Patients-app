@@ -122,7 +122,7 @@ import { UploadOutlined } from "@ant-design/icons-vue";
 import { useToast } from "vue-toastification";
 import Header from "@/components/Header.vue";
 import { IPatient } from "@/types/patients";
-import { Patient } from "@/services/patients";
+import { patientService } from "@/services/patients";
 import { toastError } from "../utils/toastError";
 
 export default defineComponent({
@@ -160,7 +160,8 @@ export default defineComponent({
     const onFinish = async (values: IPatient) => {
       loading.value = true;
       if (props.paramId) {
-        Patient.updatePatient(values, Number(props.paramId))
+        patientService
+          .updatePatient(values, Number(props.paramId))
           .then(() => {
             loading.value = false;
             toast.success("Patient updated successfully...");
@@ -170,7 +171,8 @@ export default defineComponent({
             toastError(err);
           });
       } else {
-        Patient.addPatient(values)
+        patientService
+          .addPatient(values)
           .then(() => {
             loading.value = false;
             toast.success("Patient created successfully...");

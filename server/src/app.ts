@@ -1,25 +1,35 @@
-import { NextFunction } from 'express';
-import express, { Express, Request, Response, ErrorRequestHandler } from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import morgan from 'morgan';
-import router from './routes';
+import express, {
+  Express,
+  Request,
+  Response,
+  NextFunction,
+} from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import morgan from "morgan";
+
+import router from "./routes";
+import { errorInterface } from "./types/errorInterface";
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT;
 
+/** MIDDLEWARES */
+
 app.use(cors());
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 app.use(express.json());
 app.use("/api", router);
-
-app.use((error: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
-  console.log('error is>>>', error);
-  res.status(400).json({ error });
-})
+app.use(
+  (error: errorInterface, req: Request, res: Response, next: NextFunction) => {
+    console.log("error is>>>", error);
+    const { statusCode, msg } = error;
+    res.status(statusCode ?? 400).json({ error: msg });
+  }
+);
 
 app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
+  console.log(`⚡️ server: is running at https://localhost:${port}`);
 });

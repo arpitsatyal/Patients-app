@@ -12,6 +12,8 @@ Add the following keys to your .env file in server folder.
 
 `JWT_SECRET`, secret key for json web token.
 
+`JWT_REFRESH`, refresh key for json web token.
+
 `DATABASE_URL`, Database URL of postgresql.
 
 #### cloudinary configuration keys.

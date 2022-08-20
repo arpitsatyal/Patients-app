@@ -8,7 +8,8 @@ export interface ISignUpResponse extends IUser {
   id: number;
 }
 type AuthResponseData = {
-  accessToken?: string;
+  accessToken: string;
+  refreshToken: string;
   user: IUser;
 }
 

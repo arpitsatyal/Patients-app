@@ -1,6 +1,6 @@
-import { IUser, IPatient } from "./../types/index";
 import { PrismaClient } from "@prisma/client";
 import uploadImage from "../utils/uploadImage";
+import { IUser, IPatient } from "./../types/index";
 
 const prisma = new PrismaClient();
 

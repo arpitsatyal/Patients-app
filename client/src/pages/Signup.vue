@@ -71,7 +71,9 @@ export default defineComponent({
           .then((response) => {
             this.loading = false;
             this.toast.success(response.message);
-            localStorage.setItem("user", JSON.stringify(response.data));
+            localStorage.setItem("token", response.data.accessToken);
+            localStorage.setItem("refreshToken", response.data.refreshToken);
+            localStorage.setItem("user", JSON.stringify(response.data.user));
             setTimeout(() => router.push("/dashboard"), 3000);
           })
           .catch((err) => {
@@ -89,7 +91,7 @@ export default defineComponent({
           .then((response) => {
             this.loading = false;
             this.toast.success(response.message);
-            setTimeout(() => router.push("/dashboard"), 3000);
+            setTimeout(() => router.push("/"), 3000);
           })
           .catch((err) => {
             this.loading = false;

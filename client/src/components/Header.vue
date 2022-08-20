@@ -25,6 +25,7 @@
 
 <script lang="ts">
 import router from "@/router";
+import { logout } from "@/utils/logout";
 import { defineComponent } from "@vue/runtime-core";
 import { SettingOutlined } from "@ant-design/icons-vue";
 
@@ -33,10 +34,7 @@ export default defineComponent({
     SettingOutlined,
   },
   methods: {
-    logout() {
-      localStorage.clear();
-      router.push("/");
-    },
+    logout,
     goToDashboard() {
       router.push("/dashboard");
     },

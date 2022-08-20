@@ -9,7 +9,9 @@
     <a-table :columns="columns" :data-source="patients" :pagination="false">
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'firstName'">
-          <router-link :to="{ name: 'PatientProfile', params: { id: record.id } }">
+          <router-link
+            :to="{ name: 'PatientProfile', params: { id: record.id } }"
+          >
             {{ record.firstName }} {{ record.lastName }}
           </router-link>
         </template>
@@ -17,7 +19,10 @@
         <template v-else-if="column.key === 'specialAttention'">
           <span class="pointer">
             <template v-if="record.specialAttention">
-              <EyeOutlined @click="markAsSpecial(record, false)" class="iconStyle" />
+              <EyeOutlined
+                @click="markAsSpecial(record, false)"
+                class="iconStyle"
+              />
             </template>
             <template v-else>
               <EyeInvisibleOutlined
@@ -30,11 +35,16 @@
 
         <template v-else-if="column.key === 'action'">
           <span class="pointer">
-            <router-link :to="{ name: 'UpdatePatient', params: { id: record.id } }">
+            <router-link
+              :to="{ name: 'UpdatePatient', params: { id: record.id } }"
+            >
               <EditOutlined style="margin-right: 10px" class="iconStyle" />
             </router-link>
             <a-divider type="vertical" />
-            <DeleteOutlined @click="deletePatient(record.id)" class="iconStyle" />
+            <DeleteOutlined
+              @click="deletePatient(record.id)"
+              class="iconStyle"
+            />
             <a-divider type="vertical" />
           </span>
         </template>
@@ -49,7 +59,7 @@
 <script lang="ts">
 import { IPatientResponse } from "@/types/patients";
 import { defineComponent, ref } from "@vue/runtime-core";
-import { Patient } from "../services/patients";
+import { patientService } from "../services/patients";
 import {
   EditOutlined,
   DeleteOutlined,
@@ -61,7 +71,6 @@ import { useToast } from "vue-toastification";
 import Header from "@/components/Header.vue";
 import Loading from "../components/Loading.vue";
 import { toastError } from "../utils/toastError";
-import router from "@/router";
 
 const columns = [
   {
@@ -126,7 +135,8 @@ export default defineComponent({
   },
   methods: {
     async deletePatient(id: number) {
-      Patient.deletePatient(id)
+      patientService
+        .deletePatient(id)
         .then(() => {
           this.toast.warning("Patient deleted.");
           this.fetchAllPatients();
@@ -134,7 +144,8 @@ export default defineComponent({
         .catch((err) => toastError(err));
     },
     async markAsSpecial(patient: IPatientResponse, body: boolean) {
-      Patient.markAsSpecial(body, patient.id)
+      patientService
+        .markAsSpecial(body, patient.id)
         .then(() => {
           if (body) {
             this.toast.success(
@@ -152,17 +163,14 @@ export default defineComponent({
     },
 
     fetchAllPatients() {
-      Patient.getPatients()
+      patientService
+        .getPatients()
         .then((data) => {
           if (data && data.length) {
             this.patients = data;
           }
         })
-        .catch((err) => {
-          toastError(err);
-          localStorage.clear();
-          setTimeout(() => router.push("/"), 2000);
-        });
+        .catch((err) => toastError(err));
     },
   },
   created() {

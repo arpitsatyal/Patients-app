@@ -1,4 +1,1 @@
-export function canUserAccess() {
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-    return user.accessToken ? true : false;
-  }
+export const canUserAccess = (): boolean => localStorage.getItem("token") ? true : false;
