@@ -61,6 +61,7 @@ import type { SizeType } from "ant-design-vue/es/config-provider";
 import { useToast } from "vue-toastification";
 import Header from "@/components/Header.vue";
 import { toastError } from "../utils/toastError";
+import router from "@/router";
 
 const columns = [
   {
@@ -156,7 +157,11 @@ export default defineComponent({
             this.patients = data;
           }
         })
-        .catch((err) => toastError(err));
+        .catch((err) => {
+          toastError(err);
+          localStorage.clear();
+          setTimeout(() => router.push("/"), 2000);
+        });
     },
   },
   created() {

@@ -1,11 +1,17 @@
 import { IPatientResponse, IPatient } from "../types/patients";
 import { AxiosResponse } from "axios";
 import instance from "@/utils/axios";
+import { getFromLS } from "@/utils/localStorage";
 
 const responseBody = (response: AxiosResponse) => response.data;
 
 const patientRequests = {
-  get: (url: string) => instance.get<IPatientResponse>(url).then(responseBody),
+  get: (url: string) => {
+    instance.defaults.headers.common["Authorization"] = `Bearer ${getFromLS(
+      "token"
+    )}`;
+    return instance.get<IPatientResponse>(url).then(responseBody);
+  },
 
   post: (url: string, body: IPatient) =>
     instance.post<IPatientResponse>(url, { body }).then(responseBody),
@@ -26,8 +32,10 @@ const patientRequests = {
 };
 
 export const Patient = {
-  getPatients: (): Promise<IPatientResponse[]> => patientRequests.get("/patients"),
-  getPatient: (id: number): Promise<IPatientResponse> => patientRequests.get(`/patients/${id}`),
+  getPatients: (): Promise<IPatientResponse[]> =>
+    patientRequests.get("/patients"),
+  getPatient: (id: number): Promise<IPatientResponse> =>
+    patientRequests.get(`/patients/${id}`),
   addPatient: (patient: IPatient): Promise<IPatientResponse> =>
     patientRequests.post(`/patients`, patient),
   updatePatient: (patient: IPatient, id: number): Promise<IPatientResponse> =>
