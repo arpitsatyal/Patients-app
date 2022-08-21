@@ -8,7 +8,6 @@
       :model="formState"
       name="validate_other"
       v-bind="formItemLayout"
-      @finishFailed="onFinishFailed"
       @finish="onFinish"
     >
       <a-form-item
@@ -157,7 +156,7 @@ export default defineComponent({
 
     const formState = reactive<Record<string, any>>({});
 
-    const onFinish = async (values: IPatient) => {
+    const onFinish = (values: IPatient) => {
       loading.value = true;
       if (props.paramId) {
         patientService
@@ -184,15 +183,11 @@ export default defineComponent({
       }
     };
 
-    const onFinishFailed = (errorInfo: any) => {
-      console.log("Failed:", errorInfo);
-    };
     return {
       loading,
       allergiesList,
       formState,
       onFinish,
-      onFinishFailed,
       formItemLayout,
     };
   },

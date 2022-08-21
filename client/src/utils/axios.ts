@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { getFromLS } from "./localStorage";
 
-const baseURL = "http://localhost:4200/api" 
+const baseURL = process.env.VUE_APP_API_URL 
 const instance = axios.create({
   baseURL,
 });

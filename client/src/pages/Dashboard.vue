@@ -52,7 +52,8 @@
     </a-table>
   </section>
   <div v-else>
-    <Loading />
+    <Loading v-if="isLoading" />
+    <a-empty v-else class="mt-90"/>
   </div>
 </template>
 
@@ -126,15 +127,16 @@ export default defineComponent({
   },
   setup() {
     const toast = useToast();
-
+    const isLoading = ref<boolean>(false);
     return {
       toast,
       columns,
+      isLoading,
       size: ref<SizeType>("large"),
     };
   },
   methods: {
-    async deletePatient(id: number) {
+    deletePatient(id: number) {
       patientService
         .deletePatient(id)
         .then(() => {
@@ -143,7 +145,7 @@ export default defineComponent({
         })
         .catch((err) => toastError(err));
     },
-    async markAsSpecial(patient: IPatientResponse, body: boolean) {
+    markAsSpecial(patient: IPatientResponse, body: boolean) {
       patientService
         .markAsSpecial(body, patient.id)
         .then(() => {
@@ -163,14 +165,19 @@ export default defineComponent({
     },
 
     fetchAllPatients() {
+      this.isLoading = true;
       patientService
         .getPatients()
         .then((data) => {
           if (data && data.length) {
-            this.patients = data;
+              this.patients = data;
+              this.isLoading = false;
           }
         })
-        .catch((err) => toastError(err));
+        .catch((err) => {
+          this.isLoading = false;
+          toastError(err);
+        });
     },
   },
   created() {
