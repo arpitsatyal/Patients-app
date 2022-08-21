@@ -1,6 +1,7 @@
-import { createAccessToken } from "./../utils/createTokens";
 import { NextFunction, Request, Response } from "express";
+
 import * as authService from "../services/auth";
+import { createAccessToken } from "./../utils/createTokens";
 import { verifyRefresh } from "../utils/verifyRefreshToken";
 
 export const login = async (

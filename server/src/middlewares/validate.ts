@@ -1,6 +1,9 @@
-import { NextFunction, Request, Response } from "express";
+import { userSchema, patientSchema } from "./../utils/schema";
+import { NextFunction, Request, RequestHandler, Response } from "express";
 
-export const validateBody = (schema) => {
+export const validateBody = (
+  schema: typeof userSchema | typeof patientSchema
+): RequestHandler => {
   return (req: Request, res: Response, next: NextFunction) => {
     const { body } = req;
     const { error } = schema.validate(body.body, {});

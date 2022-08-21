@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+
 import * as patientService from "../services/patients";
 
 export const getPatients = async (

@@ -1,36 +1,42 @@
 import { PrismaClient } from "@prisma/client";
+import { handleError } from "../utils/handleError";
+
 import uploadImage from "../utils/uploadImage";
 import { IUser, IPatient } from "./../types/index";
 
 const prisma = new PrismaClient();
 
-export const getAll = () => {
+export const getAll = (): Promise<IPatient[]> => {
   return new Promise((resolve, reject) => {
-    try {
-      prisma.patient
-        .findMany({
-          orderBy: [
-            {
-              specialAttention: "desc",
-            },
-            {
-              firstName: "asc",
-            },
-          ],
-        })
-        .then((data) => resolve(data));
-    } catch (e) {
-      reject(e);
-    }
+    prisma.patient
+      .findMany({
+        orderBy: [
+          {
+            specialAttention: "desc",
+          },
+          {
+            firstName: "asc",
+          },
+        ],
+      })
+      .then((data) => resolve(data))
+      .catch((e) => handleError(e).catch((err) => reject(err)));
   });
 };
 
-export const getOne = async (id: number) => {
-  const patient = await prisma.patient.findUnique({ where: { id } });
-  return patient;
+export const getOne = (id: number): Promise<Omit<IUser, "password">> => {
+  return new Promise((resolve, reject) => {
+    prisma.patient
+      .findUnique({ where: { id } })
+      .then((patient) => resolve(patient))
+      .catch((e) => handleError(e).catch((err) => reject(err)));
+  });
 };
 
-export const create = async (body: IPatient, currentUser: IUser) => {
+export const create = async (
+  body: IPatient,
+  currentUser: IUser
+): Promise<IPatient> => {
   return new Promise(async (resolve, reject) => {
     try {
       const { firstName, lastName, email, contact, address, dob, allergies } =
@@ -57,12 +63,12 @@ export const create = async (body: IPatient, currentUser: IUser) => {
       });
       resolve(user);
     } catch (e) {
-      reject(e);
+      handleError(e).catch((err) => reject(err));
     }
   });
 };
 
-export const update = async (id: number, body: IPatient) => {
+export const update = async (id: number, body: IPatient): Promise<IPatient> => {
   return new Promise(async (resolve, reject) => {
     try {
       const patient = await getOne(id);
@@ -82,12 +88,12 @@ export const update = async (id: number, body: IPatient) => {
       });
       resolve(updatedPatient);
     } catch (e) {
-      reject(e);
+      handleError(e).catch((err) => reject(err));
     }
   });
 };
 
-export const remove = (id: number) => {
+export const remove = (id: number): Promise<boolean> => {
   return new Promise(async (resolve, reject) => {
     try {
       const patient = await getOne(id);
@@ -98,24 +104,24 @@ export const remove = (id: number) => {
       });
       resolve(true);
     } catch (e) {
-      reject(e);
+      handleError(e).catch((err) => reject(err));
     }
   });
 };
 
-export const markAsSpecial = (body: IPatient, patientId: number) => {
+export const markAsSpecial = (
+  body: Pick<IPatient, "specialAttention">,
+  patientId: number
+): Promise<any> => {
   return new Promise((resolve, reject) => {
-    try {
-      prisma.patient
-        .updateMany({
-          where: {
-            id: patientId,
-          },
-          data: body,
-        })
-        .then((data) => resolve(data));
-    } catch (e) {
-      reject(e);
-    }
+    prisma.patient
+      .updateMany({
+        where: {
+          id: patientId,
+        },
+        data: body,
+      })
+      .then((data) => resolve(data))
+      .catch((err) => handleError(err).catch((err) => reject(err)));
   });
 };
