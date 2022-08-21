@@ -6,7 +6,7 @@ cloudinary.config({
   api_secret: process.env.api_secret,
 });
 
-async function uploadImage(image: any) {
+async function uploadImage(image: string) {
   const result = await cloudinary.v2.uploader.upload(image, {
     transformation: [
       { gravity: "face", height: 300, width: 200, crop: "crop" },

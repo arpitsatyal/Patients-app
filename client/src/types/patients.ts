@@ -5,11 +5,9 @@ export interface IPatient {
   contact: string;
   address: string;
   dob: string;
-  authorId: number;
   image: string;
-  specialAttention: boolean;
   allergies: string[];
-  createdAt: Date;
+  specialAttention: boolean;
 }
 
 export interface IPatientResponse extends IPatient {

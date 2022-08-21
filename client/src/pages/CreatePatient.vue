@@ -155,26 +155,30 @@ export default defineComponent({
 
     const onFinish = (values: IPatient) => {
       loading.value = true;
-      const image = (values.image[0] as any).thumbUrl;
+      let iData;
+      if (values.image) {
+        iData = (values.image[0] as any).thumbUrl;
+      }
+      const { image, ...patientData } = values;
       if (props.paramId) {
         patientService
-          .updatePatient({ ...values, image }, Number(props.paramId))
+          .updatePatient({ ...patientData, image: iData }, Number(props.paramId))
           .then(() => {
             loading.value = false;
             toast.success("Patient updated successfully...");
           })
-          .catch((err: any) => {
+          .catch((err) => {
             loading.value = false;
             toastError(err);
           });
       } else {
         patientService
-          .addPatient({ ...values, image })
+          .addPatient({ ...patientData, image: iData })
           .then(() => {
             loading.value = false;
             toast.success("Patient created successfully...");
           })
-          .catch((err: any) => {
+          .catch((err) => {
             loading.value = false;
             toastError(err);
           });
