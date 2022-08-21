@@ -1,9 +1,10 @@
 import Joi from "joi";
 
 export const userSchema = Joi.object({
+  name: Joi.string().required().min(5),
   email: Joi.string().required().email(),
   password: Joi.string().required().min(5),
-}).options({ allowUnknown: true });
+});
 
 export const patientSchema = Joi.object({
   firstName: Joi.string().required(),
@@ -12,4 +13,19 @@ export const patientSchema = Joi.object({
   contact: Joi.string().required(),
   address: Joi.string().required(),
   dob: Joi.string().required(),
-}).options({ allowUnknown: true });
+  specialAttention: Joi.bool(),
+  image: Joi.string(),
+  allergies: Joi.array().items(Joi.string()),
+});
+
+export const updatePatientSchema = Joi.object({
+  firstName: Joi.string(),
+  lastName: Joi.string(),
+  email: Joi.string().email(),
+  contact: Joi.string(),
+  address: Joi.string(),
+  dob: Joi.string(),
+  specialAttention: Joi.bool(),
+  image: Joi.string(),
+  allergies: Joi.array().items(Joi.string()),
+});

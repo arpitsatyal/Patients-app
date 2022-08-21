@@ -18,18 +18,16 @@
 
         <template v-else-if="column.key === 'specialAttention'">
           <span class="pointer">
-            <template v-if="record.specialAttention">
-              <EyeOutlined
-                @click="markAsSpecial(record, false)"
-                class="iconStyle"
-              />
-            </template>
-            <template v-else>
-              <EyeInvisibleOutlined
-                @click="markAsSpecial(record, true)"
-                class="iconStyle"
-              />
-            </template>
+            <EyeOutlined
+              v-if="record.specialAttention"
+              @click="markAsSpecial(record, false)"
+              class="iconStyle"
+            />
+            <EyeInvisibleOutlined
+              v-else
+              @click="markAsSpecial(record, true)"
+              class="iconStyle"
+            />
           </span>
         </template>
 
@@ -53,7 +51,7 @@
   </section>
   <div v-else>
     <Loading v-if="isLoading" />
-    <a-empty v-else class="mt-90"/>
+    <a-empty v-else class="mt-90" />
   </div>
 </template>
 
@@ -169,9 +167,9 @@ export default defineComponent({
       patientService
         .getPatients()
         .then((data) => {
+          this.isLoading = false;
           if (data && data.length) {
-              this.patients = data;
-              this.isLoading = false;
+            this.patients = data;
           }
         })
         .catch((err) => {

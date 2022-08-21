@@ -20,7 +20,7 @@ export const getAll = (): Promise<IPatient[]> => {
         ],
       })
       .then((data) => resolve(data))
-      .catch((e) => handleError(e).catch((err) => reject(err)));
+      .catch((err) => reject(handleError(err)));
   });
 };
 
@@ -29,7 +29,7 @@ export const getOne = (id: number): Promise<Omit<IUser, "password">> => {
     prisma.patient
       .findUnique({ where: { id } })
       .then((patient) => resolve(patient))
-      .catch((e) => handleError(e).catch((err) => reject(err)));
+      .catch((err) => reject(handleError(err)));
   });
 };
 
@@ -45,8 +45,7 @@ export const create = async (
       let image: string;
 
       if (body.image) {
-        const iData = body.image[0].thumbUrl;
-        image = await uploadImage(iData);
+        image = await uploadImage(body.image);
       }
       const user = await prisma.patient.create({
         data: {
@@ -63,7 +62,7 @@ export const create = async (
       });
       resolve(user);
     } catch (e) {
-      handleError(e).catch((err) => reject(err));
+      reject(handleError(e));
     }
   });
 };
@@ -76,8 +75,7 @@ export const update = async (id: number, body: IPatient): Promise<IPatient> => {
       let image: string;
 
       if (body.image) {
-        const iData = body.image[0].thumbUrl;
-        image = await uploadImage(iData);
+        image = await uploadImage(body.image);
         toUpdate = { ...body, image };
       }
       const updatedPatient = await prisma.patient.update({
@@ -88,7 +86,7 @@ export const update = async (id: number, body: IPatient): Promise<IPatient> => {
       });
       resolve(updatedPatient);
     } catch (e) {
-      handleError(e).catch((err) => reject(err));
+      reject(handleError(e));
     }
   });
 };
@@ -104,7 +102,7 @@ export const remove = (id: number): Promise<boolean> => {
       });
       resolve(true);
     } catch (e) {
-      handleError(e).catch((err) => reject(err));
+      reject(handleError(e));
     }
   });
 };
@@ -122,6 +120,6 @@ export const markAsSpecial = (
         data: body,
       })
       .then((data) => resolve(data))
-      .catch((err) => handleError(err).catch((err) => reject(err)));
+      .catch((err) => reject(handleError(err)));
   });
 };

@@ -31,7 +31,7 @@ export const login = (body: IUser) => {
         message: "Logged in successfully...",
       });
     } catch (e) {
-      handleError(e).catch((err) => reject(err));
+      reject(handleError(e));
     }
   });
 };
@@ -55,7 +55,7 @@ export const register = (body: IUser) => {
         message: "sign up completed successfully...",
       });
     } catch (e) {
-      handleError(e).catch((err) => reject(err));
+      reject(handleError(e));
     }
   });
 };
@@ -69,6 +69,6 @@ export function getUser(userId: number) {
         },
       })
       .then((user) => resolve(user))
-      .catch((err) => handleError(err).catch((err) => reject(err)));
+      .catch((err) => reject(handleError(err)));
   });
 }

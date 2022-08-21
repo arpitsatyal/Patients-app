@@ -63,9 +63,7 @@
       </template>
     </section>
   </div>
-  <div v-else>
-    <Loading />
-  </div>
+  <Loading v-else />
 </template>
 
 <script lang="ts">

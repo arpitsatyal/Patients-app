@@ -6,9 +6,13 @@
   <div class="container">
     <div class="form">
       <form @submit="onSubmit" class="login-form">
-        <template v-if="!isLogin">
-          <input v-model="name" type="text" name="name" placeholder="Name" />
-        </template>
+        <input
+          v-if="!isLogin"
+          v-model="name"
+          type="text"
+          name="name"
+          placeholder="Name"
+        />
         <input v-model="email" type="text" name="email" placeholder="Email" />
         <input
           v-model="password"
@@ -26,7 +30,9 @@
         <template v-else>
           <button type="submit" class="btn" v-if="!loading">Sign up</button>
           <button type="submit" class="btn" v-else>Signing up....</button>
-          <p class="message">Go Back to <router-link to="/">Login</router-link></p>
+          <p class="message">
+            Go Back to <router-link to="/">Login</router-link>
+          </p>
         </template>
       </form>
     </div>
@@ -59,7 +65,7 @@ export default defineComponent({
     };
   },
   methods: {
-    async onSubmit(e: Event) {
+    onSubmit(e: Event) {
       e.preventDefault();
       if (this.isLogin) {
         this.loading = true;

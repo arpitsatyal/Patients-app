@@ -6,26 +6,24 @@ const {
 } = Prisma;
 
 export function handleError(e: any) {
-  return new Promise((_, reject) => {
     if (e instanceof PrismaClientInitializationError) {
-      reject({
+      return({
         msg: "error connecting to the database.",
       });
     } else if (e instanceof PrismaClientKnownRequestError) {
       switch (e.code) {
         case "P2002":
-          reject({
+          return({
             msg: "This email is already registered.",
           });
         default:
-          reject(e);
+          return(e);
       }
     } else if (e instanceof PrismaClientValidationError) {
-      reject({
+      return({
         msg: "db validation failed.",
       });
     } else {
-      reject(e);
+      return(e);
     }
-  });
 }

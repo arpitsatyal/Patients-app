@@ -32,6 +32,7 @@ Install with npm
 #### backend setup
 ```bash
   cd server
+  npm i -g nodemon
   npm i -g ts-node
   npm install
   npx prisma migrate dev --name init

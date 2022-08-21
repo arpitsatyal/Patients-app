@@ -16,7 +16,7 @@
         :rules="[
           !paramId && {
             required: true,
-            message: 'Please input your firstName!',
+            message: 'Please input your First Name!',
           },
         ]"
       >
@@ -29,7 +29,7 @@
         :rules="[
           !paramId && {
             required: true,
-            message: 'Please input your lastName!',
+            message: 'Please input your Last Name!',
           },
         ]"
       >
@@ -95,7 +95,7 @@
         </a-select>
       </a-form-item>
 
-      <a-form-item name="image" label="Upload">
+      <a-form-item name="image" label="image">
         <a-upload v-model:fileList="formState.image" name="image" list-type="picture">
           <a-button>
             <template #icon><UploadOutlined /></template>
@@ -105,24 +105,21 @@
       </a-form-item>
 
       <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
-        <template v-if="loading">
-          <a-button type="primary" loading>Loading</a-button>
-        </template>
-        <template v-else>
-          <a-button type="primary" html-type="submit">Submit</a-button>
-        </template>
+        <a-button type="primary" v-if="loading" loading>Loading</a-button>
+        <a-button type="primary" v-else html-type="submit">Submit</a-button>
       </a-form-item>
     </a-form>
   </section>
 </template>
 <script lang="ts">
+import { useToast } from "vue-toastification";
 import { defineComponent, reactive, ref } from "vue";
 import { UploadOutlined } from "@ant-design/icons-vue";
-import { useToast } from "vue-toastification";
-import Header from "@/components/Header.vue";
+
 import { IPatient } from "@/types/patients";
-import { patientService } from "@/services/patients";
+import Header from "@/components/Header.vue";
 import { toastError } from "../utils/toastError";
+import { patientService } from "@/services/patients";
 
 export default defineComponent({
   props: {
@@ -158,9 +155,10 @@ export default defineComponent({
 
     const onFinish = (values: IPatient) => {
       loading.value = true;
+      const image = (values.image[0] as any).thumbUrl;
       if (props.paramId) {
         patientService
-          .updatePatient(values, Number(props.paramId))
+          .updatePatient({ ...values, image }, Number(props.paramId))
           .then(() => {
             loading.value = false;
             toast.success("Patient updated successfully...");
@@ -171,7 +169,7 @@ export default defineComponent({
           });
       } else {
         patientService
-          .addPatient(values)
+          .addPatient({ ...values, image })
           .then(() => {
             loading.value = false;
             toast.success("Patient created successfully...");
