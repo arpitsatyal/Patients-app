@@ -2,7 +2,6 @@ import { useToast } from "vue-toastification";
 const toast = useToast();
 
 export function toastError(error: any) {
-  console.log("error?", error);
   const errorFromBE = error.response.data.error;
 
   if (errorFromBE) {

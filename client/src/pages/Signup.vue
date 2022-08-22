@@ -22,17 +22,16 @@
         />
         <template v-if="isLogin">
           <button type="submit" class="btn" v-if="!loading">Login</button>
-          <button type="submit" class="btn" v-else>Logging in...</button>
+
+          <button type="submit" class="btn" disabled v-else>Logging in...</button>
           <p class="message">
             Not registered yet? <router-link to="/signup">Sign Up</router-link>
           </p>
         </template>
         <template v-else>
           <button type="submit" class="btn" v-if="!loading">Sign up</button>
-          <button type="submit" class="btn" v-else>Signing up....</button>
-          <p class="message">
-            Go Back to <router-link to="/">Login</router-link>
-          </p>
+          <button type="submit" class="btn" disabled v-else>Signing up....</button>
+          <p class="message">Go Back to <router-link to="/">Login</router-link></p>
         </template>
       </form>
     </div>
@@ -40,10 +39,11 @@
 </template>
 
 <script lang="ts">
-import router from "@/router";
-import { defineComponent, ref } from "@vue/runtime-core";
-import { authService } from "../services/auth";
 import { useToast } from "vue-toastification";
+import { defineComponent, ref } from "@vue/runtime-core";
+
+import router from "@/router";
+import { authService } from "../services/auth";
 import { toastError } from "../utils/toastError";
 
 export default defineComponent({
@@ -80,7 +80,7 @@ export default defineComponent({
             localStorage.setItem("token", response.data.accessToken);
             localStorage.setItem("refreshToken", response.data.refreshToken);
             localStorage.setItem("user", JSON.stringify(response.data.user));
-            setTimeout(() => router.push("/dashboard"), 3000);
+            setTimeout(() => router.push("/dashboard"), 1000);
           })
           .catch((err) => {
             this.loading = false;
@@ -97,7 +97,7 @@ export default defineComponent({
           .then((response) => {
             this.loading = false;
             this.toast.success(response.message);
-            setTimeout(() => router.push("/"), 3000);
+            setTimeout(() => router.push("/"), 1000);
           })
           .catch((err) => {
             this.loading = false;

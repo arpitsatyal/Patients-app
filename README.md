@@ -1,5 +1,5 @@
 
-## Patient profile application.
+## Patient profile manegement application.
 
 To run the project locally, go through the following steps:
 

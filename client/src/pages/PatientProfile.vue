@@ -5,11 +5,7 @@
       <header class="header">
         <div class="details">
           <template v-if="patient.image">
-            <img
-              :src="patient.image"
-              :alt="patient.firstName"
-              class="profile-pic"
-            />
+            <img :src="patient.image" :alt="patient.firstName" class="profile-pic" />
           </template>
           <template v-else>
             <img
@@ -18,9 +14,7 @@
               class="profile-pic"
             />
           </template>
-          <h1 class="heading">
-            {{ patient.firstName }} {{ patient.lastName }}
-          </h1>
+          <h1 class="heading">{{ patient.firstName }} {{ patient.lastName }}</h1>
 
           <div class="stats fontClass">
             <div class="col-4">
@@ -67,19 +61,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
-import Header from "../components/Header.vue";
-import Loading from "../components/Loading.vue";
-import { patientService } from "@/services/patients";
 import { useToast } from "vue-toastification";
-import { toastError } from "../utils/toastError";
+import { defineComponent } from "@vue/runtime-core";
+import { HomeOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons-vue";
+
+import Header from "../components/Header.vue";
 import { parseDate } from "../utils/parseDate";
+import Loading from "../components/Loading.vue";
+import { toastError } from "../utils/toastError";
 import { IPatientResponse } from "@/types/patients";
-import {
-  HomeOutlined,
-  MailOutlined,
-  PhoneOutlined,
-} from "@ant-design/icons-vue";
+import { patientService } from "@/services/patients";
 
 export default defineComponent({
   components: {

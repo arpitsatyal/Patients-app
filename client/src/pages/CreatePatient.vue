@@ -16,11 +16,14 @@
         :rules="[
           !paramId && {
             required: true,
-            message: 'Please input your First Name!',
+            message: 'Please input your first name!',
           },
         ]"
       >
-        <a-input v-model:value="formState.firstName" />
+        <a-input
+          v-model:value="formState.firstName"
+          :defaultValue="currentPatient && currentPatient.firstName"
+        />
       </a-form-item>
 
       <a-form-item
@@ -29,11 +32,14 @@
         :rules="[
           !paramId && {
             required: true,
-            message: 'Please input your Last Name!',
+            message: 'Please input your last name!',
           },
         ]"
       >
-        <a-input v-model:value="formState.lastName" />
+        <a-input
+          v-model:value="formState.lastName"
+          :defaultValue="currentPatient && currentPatient.lastName"
+        />
       </a-form-item>
 
       <a-form-item
@@ -41,7 +47,10 @@
         name="email"
         :rules="[!paramId && { required: true, message: 'Please input your email!' }]"
       >
-        <a-input v-model:value="formState.email" />
+        <a-input
+          v-model:value="formState.email"
+          :defaultValue="currentPatient && currentPatient.email"
+        />
       </a-form-item>
 
       <a-form-item
@@ -49,7 +58,11 @@
         name="contact"
         :rules="[!paramId && { required: true, message: 'Please input your contact!' }]"
       >
-        <a-input style="width: 100%" v-model:value="formState.contact" />
+        <a-input
+          style="width: 100%"
+          v-model:value="formState.contact"
+          :defaultValue="currentPatient && currentPatient.contact"
+        />
       </a-form-item>
 
       <a-form-item
@@ -58,7 +71,11 @@
         :rules="[!paramId && { required: true, message: 'Please input your dob!' }]"
       >
         <a-space direction="vertical" :size="12">
-          <a-date-picker value-format="YYYY-MM-DD" v-model:value="formState.dob" />
+          <a-date-picker
+            value-format="YYYY-MM-DD"
+            v-model:value="formState.dob"
+            :defaultValue="currentPatient && currentPatient.dob"
+          />
         </a-space>
       </a-form-item>
 
@@ -76,6 +93,7 @@
         <a-select
           v-model:value="formState.address"
           placeholder="Please select a district"
+          :defaultValue="currentPatient && currentPatient.address"
         >
           <a-select-option value="Kathmandu">Kathmandu</a-select-option>
           <a-select-option value="Bhaktapur">Bhaktapur</a-select-option>
@@ -88,6 +106,7 @@
           v-model:value="formState['allergies']"
           mode="multiple"
           placeholder="Please select allergies"
+          :defaultValue="currentPatient && currentPatient.allergies"
         >
           <template :key="allergy" v-for="allergy in allergiesList">
             <a-select-option :value="allergy">{{ allergy }}</a-select-option>
@@ -95,8 +114,15 @@
         </a-select>
       </a-form-item>
 
-      <a-form-item name="image" label="image">
-        <a-upload v-model:fileList="formState.image" name="image" list-type="picture">
+      <a-form-item name="image" label="Image">
+        <a-upload
+          :action="imageUrl"
+          :headers="headers"
+          v-model:fileList="formState.image"
+          @change="handleChange"
+          name="image"
+          list-type="picture"
+        >
           <a-button>
             <template #icon><UploadOutlined /></template>
             Click to upload
@@ -112,14 +138,17 @@
   </section>
 </template>
 <script lang="ts">
+import { mapState } from "vuex";
 import { useToast } from "vue-toastification";
 import { defineComponent, reactive, ref } from "vue";
 import { UploadOutlined } from "@ant-design/icons-vue";
 
-import { IPatient } from "@/types/patients";
+import router from "@/router";
 import Header from "@/components/Header.vue";
 import { toastError } from "../utils/toastError";
+import { getFromLS } from "@/utils/localStorage";
 import { patientService } from "@/services/patients";
+import { IPatient, IPatientResponse } from "@/types/patients";
 
 export default defineComponent({
   props: {
@@ -131,9 +160,13 @@ export default defineComponent({
     UploadOutlined,
     Header,
   },
+  computed: {
+    ...mapState(["patients"]),
+  },
   setup(props) {
     const loading = ref<boolean>(false);
     const toast = useToast();
+    let iData: any;
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 },
@@ -152,13 +185,17 @@ export default defineComponent({
     ];
 
     const formState = reactive<Record<string, any>>({});
+    function handleChange(info: any) {
+      if (info.file.status === "done") {
+        iData = info.file.response;
+      } else if (info.file.status === "error") {
+        toast.error(info.file.response.error ?? "error uploading image.");
+      }
+    }
 
     const onFinish = (values: IPatient) => {
       loading.value = true;
-      let iData;
-      if (values.image) {
-        iData = (values.image[0] as any).thumbUrl;
-      }
+
       const { image, ...patientData } = values;
       if (props.paramId) {
         patientService
@@ -166,6 +203,7 @@ export default defineComponent({
           .then(() => {
             loading.value = false;
             toast.success("Patient updated successfully...");
+            setTimeout(() => router.push("/dashboard"), 1000);
           })
           .catch((err) => {
             loading.value = false;
@@ -177,6 +215,7 @@ export default defineComponent({
           .then(() => {
             loading.value = false;
             toast.success("Patient created successfully...");
+            setTimeout(() => router.push("/dashboard"), 1000);
           })
           .catch((err) => {
             loading.value = false;
@@ -190,8 +229,28 @@ export default defineComponent({
       allergiesList,
       formState,
       onFinish,
+      handleChange,
       formItemLayout,
     };
+  },
+  data() {
+    return {
+      currentPatient: {} as IPatientResponse,
+      imageUrl: process.env.VUE_APP_API_URL + "/patients/upload-image",
+      headers: {
+        Authorization: `Bearer ${getFromLS("token")}`,
+      },
+    };
+  },
+  created() {
+    const matched = this.patients.filter((patient: IPatientResponse) => {
+      if (this.paramId) {
+        if (patient.id === parseInt(this.paramId)) {
+          return patient;
+        }
+      }
+    });
+    this.currentPatient = matched[0];
   },
 });
 </script>

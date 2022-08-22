@@ -1,5 +1,4 @@
-import prisma from '../db/client';
-import uploadImage from "../utils/uploadImage";
+import prisma from "../db/client";
 import { handleError } from "../utils/handleError";
 import { IUser, IPatient } from "./../types/index";
 
@@ -36,14 +35,18 @@ export const create = async (
 ): Promise<IPatient> => {
   return new Promise(async (resolve, reject) => {
     try {
-      const { firstName, lastName, email, contact, address, dob, allergies } =
-        body;
+      const {
+        firstName,
+        lastName,
+        email,
+        contact,
+        address,
+        dob,
+        allergies,
+        image,
+      } = body;
       const authorId = currentUser.id;
-      let image: string;
 
-      if (body.image) {
-        image = await uploadImage(body.image);
-      }
       const user = await prisma.patient.create({
         data: {
           firstName,
@@ -68,18 +71,12 @@ export const update = async (id: number, body: IPatient): Promise<IPatient> => {
   return new Promise(async (resolve, reject) => {
     try {
       const patient = await getOne(id);
-      let toUpdate = body;
-      let image: string;
 
-      if (body.image) {
-        image = await uploadImage(body.image);
-        toUpdate = { ...body, image };
-      }
       const updatedPatient = await prisma.patient.update({
         where: {
           email: patient.email,
         },
-        data: toUpdate,
+        data: body,
       });
       resolve(updatedPatient);
     } catch (e) {

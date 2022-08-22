@@ -9,9 +9,7 @@
     <a-table :columns="columns" :data-source="patients" :pagination="false">
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'firstName'">
-          <router-link
-            :to="{ name: 'PatientProfile', params: { id: record.id } }"
-          >
+          <router-link :to="{ name: 'PatientProfile', params: { id: record.id } }">
             {{ record.firstName }} {{ record.lastName }}
           </router-link>
         </template>
@@ -33,16 +31,11 @@
 
         <template v-else-if="column.key === 'action'">
           <span class="pointer">
-            <router-link
-              :to="{ name: 'UpdatePatient', params: { id: record.id } }"
-            >
+            <router-link :to="{ name: 'UpdatePatient', params: { id: record.id } }">
               <EditOutlined style="margin-right: 10px" class="iconStyle" />
             </router-link>
             <a-divider type="vertical" />
-            <DeleteOutlined
-              @click="deletePatient(record.id)"
-              class="iconStyle"
-            />
+            <DeleteOutlined @click="deletePatient(record.id)" class="iconStyle" />
             <a-divider type="vertical" />
           </span>
         </template>
@@ -56,20 +49,23 @@
 </template>
 
 <script lang="ts">
-import { IPatientResponse } from "@/types/patients";
-import { defineComponent, ref } from "@vue/runtime-core";
-import { patientService } from "../services/patients";
 import {
   EditOutlined,
   DeleteOutlined,
   EyeInvisibleOutlined,
   EyeOutlined,
 } from "@ant-design/icons-vue";
-import type { SizeType } from "ant-design-vue/es/config-provider";
+import { mapMutations } from "vuex";
 import { useToast } from "vue-toastification";
+import { defineComponent, ref } from "@vue/runtime-core";
+import type { SizeType } from "ant-design-vue/es/config-provider";
+
+import { logout } from "../utils/logout";
 import Header from "@/components/Header.vue";
 import Loading from "../components/Loading.vue";
 import { toastError } from "../utils/toastError";
+import { IPatientResponse } from "@/types/patients";
+import { patientService } from "../services/patients";
 
 const columns = [
   {
@@ -134,14 +130,17 @@ export default defineComponent({
     };
   },
   methods: {
+    ...mapMutations(["addPatientsToState"]),
     deletePatient(id: number) {
-      patientService
-        .deletePatient(id)
-        .then(() => {
-          this.toast.warning("Patient deleted.");
-          this.fetchAllPatients();
-        })
-        .catch((err) => toastError(err));
+      if (confirm()) {
+        patientService
+          .deletePatient(id)
+          .then(() => {
+            this.toast.warning("Patient deleted.");
+            this.fetchAllPatients();
+          })
+          .catch((err) => toastError(err));
+      }
     },
     markAsSpecial(patient: IPatientResponse, body: boolean) {
       patientService
@@ -168,13 +167,13 @@ export default defineComponent({
         .getPatients()
         .then((data) => {
           this.isLoading = false;
-          if (data && data.length) {
-            this.patients = data;
-          }
+          this.patients = data;
+          this.addPatientsToState(data);
         })
         .catch((err) => {
           this.isLoading = false;
           toastError(err);
+          logout(3000);
         });
     },
   },

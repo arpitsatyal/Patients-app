@@ -1,16 +1,16 @@
 import Joi from "joi";
 
 export const userSchema = Joi.object({
-  name: Joi.string().required().min(5),
-  email: Joi.string().required().email(),
+  name: Joi.string().required().max(10),
+  email: Joi.string().required().email().max(20),
   password: Joi.string().required().min(5),
 });
 
 export const patientSchema = Joi.object({
-  firstName: Joi.string().required(),
-  lastName: Joi.string().required(),
-  email: Joi.string().required().email(),
-  contact: Joi.string().required(),
+  firstName: Joi.string().required().max(15),
+  lastName: Joi.string().required().max(15),
+  email: Joi.string().required().email().max(20),
+  contact: Joi.string().required().max(15),
   address: Joi.string().required(),
   dob: Joi.string().required(),
   specialAttention: Joi.bool(),
@@ -19,10 +19,10 @@ export const patientSchema = Joi.object({
 });
 
 export const updatePatientSchema = Joi.object({
-  firstName: Joi.string(),
-  lastName: Joi.string(),
-  email: Joi.string().email(),
-  contact: Joi.string(),
+  firstName: Joi.string().max(15),
+  lastName: Joi.string().max(15),
+  email: Joi.string().email().max(20),
+  contact: Joi.string().max(15),
   address: Joi.string(),
   dob: Joi.string(),
   specialAttention: Joi.bool(),

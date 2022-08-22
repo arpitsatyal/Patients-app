@@ -1,6 +1,6 @@
 import prisma from '../db/client';
 import { IUser } from "./../types/index";
-import { exclude } from "../utils/excludField";
+import { exclude } from "../utils/excludeField";
 import { handleError } from "../utils/handleError";
 import { passwordHash, decryptPassword } from "../utils/passwordHash";
 import { createAccessToken, createRefreshToken } from "../utils/createTokens";
@@ -9,6 +9,11 @@ export const login = (body: IUser) => {
   return new Promise(async (resolve, reject) => {
     try {
       const { email, password } = body;
+      if(!email || !password) {
+        reject({
+          msg: 'please enter email and password.'
+        })
+      }
       const user = await prisma.user.findUnique({ where: { email } });
       if (!user) {
         reject({ msg: "invalid email or password" });

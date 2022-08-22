@@ -8,9 +8,9 @@ export interface IPatient {
   image: string;
   allergies: string[];
   specialAttention: boolean;
+  createdAt: Date;
 }
 
 export interface IPatientResponse extends IPatient {
   id: number;
 }
-

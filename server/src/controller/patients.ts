@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import * as patientService from "../services/patients";
+import { uploadImage, uploadFromBuffer } from "../utils/uploadImage";
 
 export const getPatients = async (
   req: Request,
@@ -86,5 +87,25 @@ export const markAsSpecial = async (
     });
   } catch (e) {
     next(e);
+  }
+};
+
+export const imageUpload = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    let result;
+    if ((req as any).files && (req as any).files.image) {
+      const file = (req as any).files.image;
+      result = await uploadFromBuffer(file.data);
+    } else {
+      result = await uploadImage(req.body.image);
+    }
+
+    res.status(200).json(result);
+  } catch (e) {
+    next({ msg: e.message });
   }
 };
