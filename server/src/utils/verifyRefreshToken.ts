@@ -1,5 +1,5 @@
 import jwt, { Secret } from "jsonwebtoken";
-import { IDecoded } from "../middlewares/authenticate";
+import { IDecoded } from "../types/IDecoded";
 
 const JWT_REFRESH: Secret = process.env.JWT_REFRESH;
 

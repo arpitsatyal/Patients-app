@@ -3,6 +3,7 @@ import { Request, Response, NextFunction, RequestHandler } from "express";
 
 import { IUser } from "./../types/index";
 import { getUser } from "../services/auth";
+import { IDecoded } from "./../types/IDecoded";
 
 const SECRET_KEY: Secret = process.env.JWT_SECRET;
 
@@ -10,12 +11,11 @@ interface CustomUserRequest extends Request {
   user: IUser;
 }
 
-export interface IDecoded {
-  userId: number;
-  iat: number;
-}
-
-export const auth: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
+export const auth: RequestHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
   if (!token) {
     return next({ msg: "Token not provided." });
@@ -24,7 +24,7 @@ export const auth: RequestHandler = async (req: Request, res: Response, next: Ne
   jwt.verify(token, SECRET_KEY, (err, decoded: IDecoded) => {
     if (err) {
       if (err.message === "jwt expired") {
-        return next({ statusCode: 401, msg: err.message });
+        return next({ statusCode: 401, msg: err });
       }
       return next({ msg: err });
     } else {

@@ -1,5 +1,5 @@
-import { prismaMock } from "./db/singleton";
-import { createUser } from "./db/testFunctions";
+import { prismaMock } from "../db/singleton";
+import { createUser } from "../db/testFunctions";
 
 test("should create new user ", async () => {
   const user = {

@@ -1,10 +1,7 @@
-import { PrismaClient } from "@prisma/client";
-import { handleError } from "../utils/handleError";
-
+import prisma from '../db/client';
 import uploadImage from "../utils/uploadImage";
+import { handleError } from "../utils/handleError";
 import { IUser, IPatient } from "./../types/index";
-
-const prisma = new PrismaClient();
 
 export const getAll = (): Promise<IPatient[]> => {
   return new Promise((resolve, reject) => {

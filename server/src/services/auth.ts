@@ -1,12 +1,9 @@
-import { PrismaClient } from "@prisma/client";
-
+import prisma from '../db/client';
 import { IUser } from "./../types/index";
 import { exclude } from "../utils/excludField";
+import { handleError } from "../utils/handleError";
 import { passwordHash, decryptPassword } from "../utils/passwordHash";
 import { createAccessToken, createRefreshToken } from "../utils/createTokens";
-import { handleError } from "../utils/handleError";
-
-const prisma = new PrismaClient();
 
 export const login = (body: IUser) => {
   return new Promise(async (resolve, reject) => {
