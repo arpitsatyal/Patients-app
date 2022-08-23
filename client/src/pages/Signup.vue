@@ -80,7 +80,7 @@ export default defineComponent({
             localStorage.setItem("token", response.data.accessToken);
             localStorage.setItem("refreshToken", response.data.refreshToken);
             localStorage.setItem("user", JSON.stringify(response.data.user));
-            setTimeout(() => router.push("/dashboard"), 1000);
+            router.push("/dashboard");
           })
           .catch((err) => {
             this.loading = false;
@@ -97,7 +97,7 @@ export default defineComponent({
           .then((response) => {
             this.loading = false;
             this.toast.success(response.message);
-            setTimeout(() => router.push("/"), 1000);
+            router.push("/");
           })
           .catch((err) => {
             this.loading = false;

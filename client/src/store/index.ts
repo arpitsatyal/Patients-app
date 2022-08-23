@@ -1,5 +1,5 @@
-import { IPatientResponse } from "./../types/patients";
 import { createStore } from "vuex";
+import { IPatientResponse } from "./../types/patients";
 
 interface State {
   patients: IPatientResponse[];
