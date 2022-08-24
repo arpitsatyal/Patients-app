@@ -1,6 +1,8 @@
 
 ## Patient profile manegement application.
 
+https://patients-app-arpit.netlify.app/
+
 To run the project locally, go through the following steps:
 
 
