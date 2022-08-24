@@ -7,13 +7,14 @@ export interface IUser {
 export interface ISignUpResponse extends IUser {
   id: number;
 }
+
 type AuthResponseData = {
   accessToken: string;
   refreshToken: string;
   user: IUser;
-}
+};
 
 export interface SignUpResponse {
-  data: AuthResponseData,
+  data: AuthResponseData;
   message: string;
 }

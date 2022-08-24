@@ -1,13 +1,14 @@
 import { createApp } from "vue";
-import App from "./App.vue";
-import router from "./router/index";
-import Toast from "vue-toastification";
 import Antd from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
+import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
-import CreatePatient from './pages/CreatePatient.vue';
-import Signup from './pages/Signup.vue';
+
+import App from "./App.vue";
 import store from './store/index';
+import router from "./router/index";
+import Signup from './pages/Signup.vue';
+import CreatePatient from './pages/CreatePatient.vue';
 
 const app = createApp(App);
 app.component('CreatePatient', CreatePatient); 

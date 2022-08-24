@@ -1,6 +1,6 @@
-import { ISignUpResponse, IUser, SignUpResponse } from "../types/auth";
 import { AxiosResponse } from "axios";
 import instance from "@/utils/axios";
+import { ISignUpResponse, IUser, SignUpResponse } from "../types/auth";
 
 const responseBody = (response: AxiosResponse) => response.data;
 
