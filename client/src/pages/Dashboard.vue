@@ -10,10 +10,9 @@
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'firstName'">
           <router-link :to="{ name: 'PatientProfile', params: { id: record.id } }">
-            {{ record.firstName }} {{ record.lastName }}
+            <p id="test-patient">{{ record.firstName }} {{ record.lastName }}</p>
           </router-link>
         </template>
-
         <template v-else-if="column.key === 'specialAttention'">
           <span class="pointer">
             <EyeOutlined
@@ -131,8 +130,9 @@ export default defineComponent({
   },
   methods: {
     ...mapMutations(["addPatientsToState"]),
+
     deletePatient(id: number) {
-      if (confirm()) {
+      if (confirm("are you sure you want to delete this patient?")) {
         patientService
           .deletePatient(id)
           .then(() => {

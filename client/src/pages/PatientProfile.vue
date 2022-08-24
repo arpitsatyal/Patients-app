@@ -4,16 +4,18 @@
     <section class="profile">
       <header class="header">
         <div class="details">
-          <template v-if="patient.image">
-            <img :src="patient.image" :alt="patient.firstName" class="profile-pic" />
-          </template>
-          <template v-else>
-            <img
-              src="@/assets/images/default.jpg"
-              :alt="patient.firstName"
-              class="profile-pic"
-            />
-          </template>
+          <img
+            v-if="patient.image"
+            :src="patient.image"
+            :alt="patient.firstName"
+            class="profile-pic"
+          />
+          <img
+            v-else
+            src="@/assets/images/default.jpg"
+            :alt="patient.firstName"
+            class="profile-pic"
+          />
           <h1 class="heading">{{ patient.firstName }} {{ patient.lastName }}</h1>
 
           <div class="stats fontClass">
@@ -52,9 +54,7 @@
           </template>
         </table>
       </template>
-      <template v-else>
-        <p class="center">There are no allergies for this patient as of now.</p>
-      </template>
+      <p v-else class="center">There are no allergies for this patient as of now.</p>
     </section>
   </div>
   <Loading v-else />

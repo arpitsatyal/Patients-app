@@ -166,7 +166,7 @@ export default defineComponent({
   setup(props) {
     const loading = ref<boolean>(false);
     const toast = useToast();
-    let iData: any;
+    let iData: string;
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 },
