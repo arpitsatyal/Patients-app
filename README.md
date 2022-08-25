@@ -3,8 +3,6 @@
 
 https://patients-as.vercel.app/
 
-https://patients-app-as.netlify.app/
-
 To run the project locally, go through the following steps:
 
 
@@ -49,3 +47,5 @@ Install with npm
   npm i
   npm run serve
 ```
+
+Alternate URL: https://patients-app-as.netlify.app/
