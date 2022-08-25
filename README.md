@@ -1,7 +1,9 @@
 
 ## Patient profile manegement application.
 
-https://patients-app-arpit.netlify.app/
+https://patients-as.vercel.app/
+
+https://patients-app-as.netlify.app/
 
 To run the project locally, go through the following steps:
 
@@ -36,7 +38,7 @@ Install with npm
   cd server
   npm i -g nodemon
   npm i -g ts-node
-  npm install
+  npm i
   npx prisma migrate dev --name init
   npm run serve
 ```

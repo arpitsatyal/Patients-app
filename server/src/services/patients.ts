@@ -35,30 +35,10 @@ export const create = async (
 ): Promise<IPatient> => {
   return new Promise(async (resolve, reject) => {
     try {
-      const {
-        firstName,
-        lastName,
-        email,
-        contact,
-        address,
-        dob,
-        allergies,
-        image,
-      } = body;
       const authorId = currentUser.id;
 
       const user = await prisma.patient.create({
-        data: {
-          firstName,
-          lastName,
-          email,
-          address,
-          contact,
-          dob,
-          image,
-          authorId,
-          allergies,
-        },
+        data: { ...body, authorId },
       });
       resolve(user);
     } catch (e) {

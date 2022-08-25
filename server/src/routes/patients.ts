@@ -1,15 +1,8 @@
 import { Router } from "express";
-import {
-  createPatient,
-  deletePatient,
-  getPatient,
-  getPatients,
-  imageUpload,
-  markAsSpecial,
-  updatePatient,
-} from "../controller/patients";
+
 import { auth } from "./../middlewares/authenticate";
 import { validateBody } from "./../middlewares/validate";
+import * as patientController from "../controller/patients";
 import { patientSchema, updatePatientSchema } from "../utils/schema";
 
 const router = Router();
@@ -18,21 +11,21 @@ router.use(auth);
 
 router
   .route("/")
-  .get(getPatients)
-  .post(validateBody(patientSchema), createPatient);
+  .get(patientController.getPatients)
+  .post(validateBody(patientSchema), patientController.createPatient);
 
 router
   .route("/:id")
-  .get(getPatient)
-  .put(validateBody(updatePatientSchema), updatePatient)
-  .delete(deletePatient);
+  .get(patientController.getPatient)
+  .put(validateBody(updatePatientSchema), patientController.updatePatient)
+  .delete(patientController.deletePatient);
 
 router.put(
   "/mark-as-special/:id",
   validateBody(updatePatientSchema),
-  markAsSpecial
+  patientController.markAsSpecial
 );
 
-router.post("/upload-image", imageUpload);
+router.post("/upload-image", patientController.imageUpload);
 
 export default router;
