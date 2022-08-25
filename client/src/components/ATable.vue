@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <section>
     <a-table :columns="columns" :data-source="patients" :pagination="false">

@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="example">
     <h2 class="mb-20">loading...</h2>

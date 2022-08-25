@@ -47,7 +47,6 @@ import { authService } from "../services/auth";
 import { toastError } from "../utils/toastError";
 
 export default defineComponent({
-  // eslint-disable-next-line vue/multi-word-component-names
   name: "Signup",
   props: {
     isLogin: Boolean,
@@ -80,7 +79,7 @@ export default defineComponent({
             localStorage.setItem("token", response.data.accessToken);
             localStorage.setItem("refreshToken", response.data.refreshToken);
             localStorage.setItem("user", JSON.stringify(response.data.user));
-            router.push("/dashboard");
+            setTimeout(() => router.push("/dashboard"), 1000);
           })
           .catch((err) => {
             this.loading = false;
@@ -97,7 +96,7 @@ export default defineComponent({
           .then((response) => {
             this.loading = false;
             this.toast.success(response.message);
-            router.push("/");
+            setTimeout(() => router.push("/"), 1000);
           })
           .catch((err) => {
             this.loading = false;

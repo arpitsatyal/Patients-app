@@ -33,7 +33,6 @@ import { IPatientResponse } from "@/types/patients";
 import { patientService } from "../services/patients";
 
 export default defineComponent({
-  // eslint-disable-next-line vue/multi-word-component-names
   name: "Dashboard",
   data() {
     return {
@@ -106,7 +105,7 @@ export default defineComponent({
   created() {
     this.fetchAllPatients();
   },
-  inheritAttrs: false, // disable 'non-props' warning
+  inheritAttrs: false,
 });
 </script>
 

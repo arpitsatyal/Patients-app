@@ -243,14 +243,14 @@ export default defineComponent({
     };
   },
   created() {
-    const matched = this.patients.filter((patient: IPatientResponse) => {
+    const matched = this.patients?.filter((patient: IPatientResponse) => {
       if (this.paramId) {
         if (patient.id === parseInt(this.paramId)) {
           return patient;
         }
       }
     });
-    this.currentPatient = matched[0];
+    this.currentPatient = matched && matched[0];
   },
 });
 </script>
